@@ -44,7 +44,7 @@ export default function Sidebar() {
                     <img id="footer-avatar" className="w-20 rounded-full ml-4" src="https://i.pravatar.cc/100"  />
                 </div>
                 <span id="footer-brand" className="font-bold text-gray-400">Furab Restaurant Admin Dashboard</span>
-                <p id="footer-copyright" className="font-light text-gray-400">&copy; 2025 All Right Reserved</p>
+                <p id="footer-copyright" className="font-light text-gray-400">&copy; 2026 All Right Reserved</p>
             </div>
         </div>
     );
