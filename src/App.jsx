@@ -8,8 +8,9 @@ import Forgot from './pages/auth/Forgot';
 // import Loading from './components/Loading';
 
 const Dashboard = React.lazy(() => import("./pages/main/Dashboard"))
-const Orders = React.lazy(() => import("./pages/main/Orders"))
-const Customers = React.lazy(() => import("./pages/main/Customers"))
+const Booking = React.lazy(() => import("./pages/main/Booking"))
+const Guests = React.lazy(() => import("./pages/main/Guests"))
+const Rooms = React.lazy(() => import("./pages/main/Rooms"))
 const ErrorPage = React.lazy(() => import("./pages/main/ErrorPage"))
 const MainLayout = React.lazy(() => import("./layouts/MainLayout"))
 const Loading = React.lazy(() => import("./components/Loading"))
@@ -21,8 +22,9 @@ export default function App() {
         <Routes>
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/customers" element={<Customers />} />
+                <Route path="/booking" element={<Booking />} />
+                <Route path="/guests" element={<Guests />} />
+                <Route path="/rooms" element={<Rooms />} />
             </Route>
 
             <Route element={<AuthLayout/>}>
