@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 
 export default function Rooms() {
@@ -92,9 +93,12 @@ export default function Rooms() {
                 {room.price}
               </p>
 
-              <button className="mt-4 w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">
-                View Details
-              </button>
+                <Link
+                  to={`/rooms/${room.id}`}
+                  className="block text-center mt-4 w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600"
+                >
+                  View Details
+                </Link>
 
             </div>
           </div>

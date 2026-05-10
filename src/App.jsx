@@ -14,6 +14,8 @@ const Rooms = React.lazy(() => import("./pages/main/Rooms"))
 const ErrorPage = React.lazy(() => import("./pages/main/ErrorPage"))
 const MainLayout = React.lazy(() => import("./layouts/MainLayout"))
 const Loading = React.lazy(() => import("./components/Loading"))
+const RoomDetail = React.lazy(() => import("./pages/main/RoomDetail"))
+const GuestDetail = React.lazy(() => import("./pages/main/GuestDetail"))
 
 
 export default function App() {
@@ -25,6 +27,8 @@ export default function App() {
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/guests" element={<Guests />} />
                 <Route path="/rooms" element={<Rooms />} />
+                <Route path="/rooms/:id" element={<RoomDetail />} />
+                <Route path="/guests/:id" element={<GuestDetail />} />
             </Route>
 
             <Route element={<AuthLayout/>}>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import customerData from "../../data/Customers.json";
 
@@ -102,13 +103,24 @@ export default function Guests() {
           <tbody>
             {customerData.map((cust) => (
               <tr key={cust.id} className="border-t">
+
                 <td className="p-4 font-semibold text-gray-700">
                   {cust.id}
                 </td>
-                <td className="p-4">{cust.name}</td>
+
+                <td className="p-4">
+                  <Link
+                    to={`/guests/${cust.id}`}
+                    className="text-yellow-600 hover:underline font-medium"
+                  >
+                    {cust.name}
+                  </Link>
+                </td>
+
                 <td className="p-4 text-yellow-600 font-semibold">
                   {cust.loyalty}
                 </td>
+
               </tr>
             ))}
           </tbody>
