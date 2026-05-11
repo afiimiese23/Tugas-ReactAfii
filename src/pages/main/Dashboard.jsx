@@ -88,7 +88,6 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* RESERVATION STATS (CHART) */}
                     <div className="bg-white p-8 rounded-[32px] shadow-sm border border-gray-50">
                         <div className="flex justify-between items-center mb-8">
                             <h3 className="font-bold text-[#113D32] text-lg">Reservation Stats</h3>
