@@ -1,64 +1,86 @@
-import { FaBell, FaSearch, FaHotel } from "react-icons/fa";
-import { FcAreaChart } from "react-icons/fc";
-import { SlSettings } from "react-icons/sl";
+import { 
+    FaSearch, 
+    FaBell, 
+    FaRegHeart, 
+    FaRegEnvelope, 
+    FaRegCommentDots 
+} from "react-icons/fa";
+
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
+
+    const location = useLocation();
+
+    const getTitle = () => {
+        if (location.pathname.startsWith("/rooms")) {
+            return "Rooms";
+        }
+
+        if (location.pathname.startsWith("/guests")) {
+            return "Guests";
+        }
+
+        if (location.pathname.startsWith("/booking")) {
+            return "Booking";
+        }
+
+        if (location.pathname.startsWith("/settings")) {
+            return "Settings";
+        }
+
+        if (location.pathname.startsWith("/employers")) {
+            return "Employers";
+        }
+
+        return "Dashboard";
+    };
+
     return (
-        <div id="header-container" className="flex justify-between items-center p-4 bg-white shadow-sm">
-            
-            {/* Logo + Search */}
-            <div className="flex items-center gap-4 w-full">
-                
-                {/* Logo Hotel */}
-                <div className="flex items-center gap-2 text-yellow-600 font-semibold text-lg">
-                    <FaHotel />
-                    <span>LuxuryStay</span>
-                </div>
+        <header className="bg-white p-4 flex justify-between items-center px-8 shadow-sm sticky top-0 z-10 font-['Poppins']">
 
-                {/* Search */}
-                <div id="search-bar" className="relative w-full max-w-lg">
-                    <input
-                        id="search-input"
-                        className="border border-gray-200 p-2 pr-10 bg-gray-50 w-full rounded-md outline-none"
-                        type="text"
-                        placeholder="Search rooms, guests, bookings..."
+            {/* Dynamic Title */}
+            <h2 className="text-xl font-bold text-gray-800">
+                {getTitle()}
+            </h2>
+
+            <div className="flex items-center space-x-6">
+
+                {/* Search Bar */}
+                <div className="relative hidden md:block">
+                    <input 
+                        type="text" 
+                        placeholder="Search..." 
+                        className="bg-[#EEEEEE] border-none rounded-full py-2 px-10 text-sm focus:ring-2 focus:ring-[#113D32] w-64 transition-all"
                     />
-                    <FaSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                </div>
-            </div>
 
-            {/* Icons */}
-            <div id="icons-container" className="flex items-center space-x-4">
-                
-                {/* Booking Notification */}
-                <div className="relative p-3 bg-yellow-100 rounded-2xl text-yellow-600 cursor-pointer">
-                    <FaBell />
-                    <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-yellow-200 rounded-full px-2 py-1 text-xs">
-                        12
-                    </span>
+                    <FaSearch className="absolute left-4 top-3 text-gray-400 text-xs" />
                 </div>
 
-                {/* Hotel Analytics */}
-                <div className="p-3 bg-gray-100 rounded-2xl cursor-pointer">
-                    <FcAreaChart />
-                </div>
+                {/* Icons */}
+                <div className="flex space-x-5 text-gray-600 text-lg border-r border-gray-100 pr-6">
 
-                {/* Settings */}
-                <div className="p-3 bg-red-100 rounded-2xl text-red-500 cursor-pointer">
-                    <SlSettings />
+                    <FaRegHeart className="cursor-pointer hover:text-[#113D32] transition-colors" />
+
+                    <FaRegEnvelope className="cursor-pointer hover:text-[#113D32] transition-colors" />
+
+                    <FaBell className="cursor-pointer hover:text-[#113D32] transition-colors" />
+
+                    <FaRegCommentDots className="cursor-pointer hover:text-[#113D32] transition-colors" />
+
                 </div>
 
                 {/* Profile */}
-                <div className="flex items-center space-x-4 border-l pl-4 border-gray-300">
-                    <span>
-                        Welcome, <b>Guest</b>
-                    </span>
-                    <img
-                        src="https://avatar.iran.liara.run/public/28"
-                        className="w-10 h-10 rounded-full"
+                <div className="flex items-center">
+                    <img 
+                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d" 
+                        alt="Profile" 
+                        className="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover"
                     />
                 </div>
+
             </div>
-        </div>
+
+        </header>
     );
 }

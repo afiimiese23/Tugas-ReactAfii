@@ -1,120 +1,101 @@
 import { 
     MdSpaceDashboard, 
-    MdMeetingRoom, 
     MdPeople, 
-    MdBookOnline,
-    MdError, 
-    MdLock, 
-    MdBlock 
+    MdListAlt, 
+    MdSettings, 
+    MdLogout,
+    MdMeetingRoom,
+    MdPersonSearch
 } from "react-icons/md";
-
 import { FaHotel } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
-
+    // Fungsi class untuk NavLink agar sesuai dengan desain StayZone
     const menuClass = ({ isActive }) =>
-        `flex cursor-pointer items-center rounded-xl p-4 space-x-2 transition-all ${
+        `flex cursor-pointer items-center rounded-xl p-3 space-x-3 transition-all ${
             isActive
-                ? "text-yellow-600 bg-yellow-100 font-bold"
-                : "text-gray-600 hover:text-yellow-600 hover:bg-yellow-100"
+                ? "text-white bg-[#ffffff20] font-semibold" // Putih transparan saat aktif
+                : "text-gray-400 hover:text-white hover:bg-[#ffffff10]" // Abu-abu saat idle
         }`;
 
     return (
-        <div className="flex min-h-screen w-80 flex-col bg-white p-8 shadow-lg">
+        <div className="flex min-h-screen w-64 flex-col bg-[#113D32] p-6 shadow-xl text-white">
 
-            {/* LOGO */}
-            <div className="flex flex-col">
-                <span className="text-4xl font-bold text-gray-900 flex items-center gap-2">
-                    <FaHotel className="text-yellow-600" />
-                    LuxuryStay
-                </span>
-                <span className="font-medium text-gray-400">
-                    Hotel Management System
+            {/* LOGO - Identitas StayZone */}
+            <div className="flex items-center gap-3 mb-12 px-2">
+                <div className="bg-white p-2 rounded-lg shadow-sm">
+                    <FaHotel className="text-[#113D32] text-xl" />
+                </div>
+                <span className="text-2xl font-bold tracking-tight">
+                    StayZone
                 </span>
             </div>
 
-            {/* MENU */}
-            <div className="mt-10">
-                <ul className="space-y-3">
-
+            {/* MENU UTAMA */}
+            <div className="flex-1">
+                <ul className="space-y-2">
                     <li>
                         <NavLink to="/" className={menuClass}>
-                            <MdSpaceDashboard className="mr-3 text-xl" />
-                            Dashboard
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/rooms" className={menuClass}>
-                            <MdMeetingRoom className="mr-3 text-xl" />
-                            Rooms
-                        </NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/booking" className={menuClass}>
-                            <MdBookOnline className="mr-3 text-xl" />
-                            Booking
+                            <MdSpaceDashboard className="text-xl" />
+                            <span className="text-sm">Dashboard</span>
                         </NavLink>
                     </li>
 
                     <li>
                         <NavLink to="/guests" className={menuClass}>
-                            <MdPeople className="mr-3 text-xl" />
-                            Guests
-                        </NavLink>
-                    </li>
-
-                    {/* ERROR PAGES */}
-                    <li>
-                        <NavLink to="/error-400" className={menuClass}>
-                            <MdError className="mr-3 text-xl text-orange-500" />
-                            Error 400
+                            <MdPeople className="text-xl" />
+                            <span className="text-sm">Guest List</span>
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/error-401" className={menuClass}>
-                            <MdLock className="mr-3 text-xl text-red-400" />
-                            Error 401
+                        <NavLink to="/guest-details" className={menuClass}>
+                            <MdPersonSearch className="text-xl" />
+                            <span className="text-sm">Guest Details</span>
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/error-403" className={menuClass}>
-                            <MdBlock className="mr-3 text-xl text-red-600" />
-                            Error 403
+                        <NavLink to="/employers" className={menuClass}>
+                            <MdListAlt className="text-xl" />
+                            <span className="text-sm">Employers List</span>
                         </NavLink>
                     </li>
 
+                    <li>
+                        <NavLink to="/rooms" className={menuClass}>
+                            <MdMeetingRoom className="text-xl" />
+                            <span className="text-sm">Room List</span>
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/settings" className={menuClass}>
+                            <MdSettings className="text-xl" />
+                            <span className="text-sm">Settings</span>
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 
-            {/* FOOTER */}
-            <div className="mt-auto">
-                <div className="bg-yellow-500 px-4 py-3 rounded-xl shadow-md mb-8 flex items-center justify-between">
-                    <div className="text-white text-sm">
-                        <span>Manage your hotel rooms & bookings easily</span>
-
-                        <div className="flex justify-center items-center p-2 mt-3 bg-white rounded-md text-black cursor-pointer hover:bg-gray-100">
-                            <span> + Add Room</span>
-                        </div>
-                    </div>
-
-                    <img 
-                        className="w-16 rounded-full ml-4" 
-                        src="https://i.pravatar.cc/100" 
-                        alt="avatar" 
-                    />
+            {/* FOOTER MENU - Logout */}
+            <div className="mt-auto pt-6 border-t border-[#ffffff10]">
+                <ul className="space-y-2">
+                    <li>
+                        <NavLink to="/logout" className={menuClass}>
+                            <MdLogout className="text-xl" />
+                            <span className="text-sm">Logout</span>
+                        </NavLink>
+                    </li>
+                </ul>
+                
+                {/* Brand Info (Opsional) */}
+                <div className="mt-6 px-3">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold opacity-50">
+                        StayZone Admin v1.0
+                    </p>
                 </div>
-
-                <span className="font-bold text-gray-400">
-                    LuxuryStay Hotel Admin
-                </span>
-                <p className="text-gray-400 text-sm">
-                    © 2026 All Rights Reserved
-                </p>
             </div>
 
         </div>

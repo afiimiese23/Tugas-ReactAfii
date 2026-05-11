@@ -1,8 +1,25 @@
 export default function Loading() {
     return (
-        <div className=" flex flex-col justify-center items-center min-h-screen bg-white">
-            <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-yellow-600 text-lg">Loading...</p>
+        <div className="min-h-screen bg-[#EEEEEE] flex flex-col justify-center items-center font-['Poppins']">
+
+            {/* Loader */}
+            <div className="relative flex items-center justify-center">
+
+                <div className="w-20 h-20 border-[6px] border-[#D9EDE7] rounded-full"></div>
+
+                <div className="absolute w-20 h-20 border-[6px] border-[#113D32] border-t-transparent rounded-full animate-spin"></div>
+
+            </div>
+
+            {/* Text */}
+            <h2 className="mt-8 text-2xl font-black text-[#113D32] tracking-wide">
+                Loading...
+            </h2>
+
+            <p className="text-sm text-[#6E6E6E] mt-2">
+                Please wait while the dashboard is loading
+            </p>
+
         </div>
     );
 }

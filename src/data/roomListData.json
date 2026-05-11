@@ -1,0 +1,302 @@
+[
+  {
+    "id": "#RM-91234",
+    "name": "Deluxe A-91234",
+    "bedType": "Double Bed",
+    "floor": "Floor A-1",
+    "facilities": "AC, Shower, Double Bed, Towel, Bathup, Coffee Set, LED TV, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=400"
+  },
+  {
+    "id": "#RM-91235",
+    "name": "Deluxe A-91235",
+    "bedType": "Double Bed",
+    "floor": "Floor A-1",
+    "facilities": "AC, Shower, Double Bed, Towel, Bathup, Coffee Set, LED TV, Wifi",
+    "rate": "999",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=400"
+  },
+  {
+    "id": "#RM-91236",
+    "name": "Suite B-201",
+    "bedType": "King Size",
+    "floor": "Floor B-2",
+    "facilities": "Mini Bar, AC, Smart TV, King Bed, Bathup, Balcony, Wifi",
+    "rate": "1500",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1591088398332-8a77d399e843?q=80&w=400"
+  },
+  {
+    "id": "#RM-91237",
+    "name": "Superior C-301",
+    "bedType": "Single Bed",
+    "floor": "Floor C-3",
+    "facilities": "AC, Shower, Single Bed, LED TV, Wifi",
+    "rate": "550",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=400"
+  },
+  {
+    "id": "#RM-91238",
+    "name": "Standard D-101",
+    "bedType": "Single Bed",
+    "floor": "Floor D-1",
+    "facilities": "Fan, Shower, Single Bed, Wifi",
+    "rate": "350",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=400"
+  },
+  {
+    "id": "#RM-91239",
+    "name": "Deluxe A-91240",
+    "bedType": "Double Bed",
+    "floor": "Floor A-2",
+    "facilities": "AC, Shower, Double Bed, Bathup, Coffee Set, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=400"
+  },
+  {
+    "id": "#RM-91241",
+    "name": "Suite B-202",
+    "bedType": "King Size",
+    "floor": "Floor B-2",
+    "facilities": "Mini Bar, Smart TV, King Bed, Bathup, Balcony",
+    "rate": "1550",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1578683062530-e81abbd1d4d3?q=80&w=400"
+  },
+  {
+    "id": "#RM-91242",
+    "name": "Superior C-302",
+    "bedType": "Single Bed",
+    "floor": "Floor C-3",
+    "facilities": "AC, Shower, Single Bed, LED TV, Wifi",
+    "rate": "550",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1505691938895-1758d7eaa511?q=80&w=400"
+  },
+  {
+    "id": "#RM-91243",
+    "name": "Deluxe A-91244",
+    "bedType": "Double Bed",
+    "floor": "Floor A-3",
+    "facilities": "AC, Shower, Double Bed, Coffee Set, LED TV, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=400"
+  },
+  {
+    "id": "#RM-91245",
+    "name": "Suite B-205",
+    "bedType": "King Size",
+    "floor": "Floor B-2",
+    "facilities": "Full Bar, Jacuzzi, King Bed, Smart TV, Wifi",
+    "rate": "1800",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=400"
+  },
+  {
+    "id": "#RM-91246",
+    "name": "Superior C-305",
+    "bedType": "Double Bed",
+    "floor": "Floor C-3",
+    "facilities": "AC, Shower, LED TV, Wifi",
+    "rate": "600",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=400"
+  },
+  {
+    "id": "#RM-91247",
+    "name": "Standard D-105",
+    "bedType": "Single Bed",
+    "floor": "Floor D-1",
+    "facilities": "Fan, Shower, Wifi",
+    "rate": "350",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=400"
+  },
+  {
+    "id": "#RM-91248",
+    "name": "Deluxe B-91248",
+    "bedType": "Double Bed",
+    "floor": "Floor B-1",
+    "facilities": "AC, Bathup, LED TV, Coffee Set, Wifi",
+    "rate": "999",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=400"
+  },
+  {
+    "id": "#RM-91249",
+    "name": "Superior A-309",
+    "bedType": "Double Bed",
+    "floor": "Floor A-3",
+    "facilities": "AC, Shower, LED TV, Wifi",
+    "rate": "650",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=400"
+  },
+  {
+    "id": "#RM-91250",
+    "name": "Suite C-501",
+    "bedType": "King Size",
+    "floor": "Floor C-5",
+    "facilities": "Jacuzzi, Mini Bar, King Bed, Balcony, Wifi",
+    "rate": "2000",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=400"
+  },
+  {
+    "id": "#RM-91251",
+    "name": "Standard B-110",
+    "bedType": "Single Bed",
+    "floor": "Floor B-1",
+    "facilities": "AC, Shower, Wifi",
+    "rate": "450",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=400"
+  },
+  {
+    "id": "#RM-91252",
+    "name": "Deluxe C-91252",
+    "bedType": "Double Bed",
+    "floor": "Floor C-1",
+    "facilities": "AC, Shower, Double Bed, Coffee Set, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=400"
+  },
+  {
+    "id": "#RM-91253",
+    "name": "Suite A-401",
+    "bedType": "King Size",
+    "floor": "Floor A-4",
+    "facilities": "Mini Bar, King Bed, Jacuzzi, LED TV",
+    "rate": "1700",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1512918766674-ed62b9009a05?q=80&w=400"
+  },
+  {
+    "id": "#RM-91254",
+    "name": "Superior D-201",
+    "bedType": "Double Bed",
+    "floor": "Floor D-2",
+    "facilities": "AC, Shower, LED TV, Wifi",
+    "rate": "650",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1584132915807-fd1f5fbc078f?q=80&w=400"
+  },
+  {
+    "id": "#RM-91255",
+    "name": "Deluxe B-91255",
+    "bedType": "Double Bed",
+    "floor": "Floor B-3",
+    "facilities": "AC, Bathup, Coffee Set, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=400"
+  },
+  {
+    "id": "#RM-91256",
+    "name": "Standard C-102",
+    "bedType": "Single Bed",
+    "floor": "Floor C-1",
+    "facilities": "Fan, Shower, Wifi",
+    "rate": "350",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1536349788264-1b816db3cc13?q=80&w=400"
+  },
+  {
+    "id": "#RM-91257",
+    "name": "Suite D-502",
+    "bedType": "King Size",
+    "floor": "Floor D-5",
+    "facilities": "Jacuzzi, Mini Bar, Smart TV, Balcony",
+    "rate": "2100",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=400"
+  },
+  {
+    "id": "#RM-91258",
+    "name": "Superior B-302",
+    "bedType": "Single Bed",
+    "floor": "Floor B-3",
+    "facilities": "AC, Shower, LED TV, Wifi",
+    "rate": "550",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=400"
+  },
+  {
+    "id": "#RM-91259",
+    "name": "Deluxe D-91259",
+    "bedType": "Double Bed",
+    "floor": "Floor D-1",
+    "facilities": "AC, Bathup, LED TV, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1592229505726-ca121723b8ef?q=80&w=400"
+  },
+  {
+    "id": "#RM-91260",
+    "name": "Suite A-405",
+    "bedType": "King Size",
+    "floor": "Floor A-4",
+    "facilities": "Mini Bar, Jacuzzi, Balcony, Wifi",
+    "rate": "1900",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1505693419173-42b9258a634e?q=80&w=400"
+  },
+  {
+    "id": "#RM-91261",
+    "name": "Standard D-110",
+    "bedType": "Single Bed",
+    "floor": "Floor D-1",
+    "facilities": "Fan, Shower, Wifi",
+    "rate": "350",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=400"
+  },
+  {
+    "id": "#RM-91262",
+    "name": "Superior C-402",
+    "bedType": "Double Bed",
+    "floor": "Floor C-4",
+    "facilities": "AC, LED TV, Wifi",
+    "rate": "700",
+    "status": "BOOKED",
+    "image": "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=400"
+  },
+  {
+    "id": "#RM-91263",
+    "name": "Deluxe C-91263",
+    "bedType": "Double Bed",
+    "floor": "Floor C-2",
+    "facilities": "AC, Bathup, Coffee Set, Wifi",
+    "rate": "999",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1595576132611-0e90f2b09177?q=80&w=400"
+  },
+  {
+    "id": "#RM-91264",
+    "name": "Suite B-505",
+    "bedType": "King Size",
+    "floor": "Floor B-5",
+    "facilities": "Jacuzzi, Full Bar, Smart TV, Balcony",
+    "rate": "2500",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1574643156929-51fa098b0394?q=80&w=400"
+  },
+  {
+    "id": "#RM-91265",
+    "name": "Standard A-105",
+    "bedType": "Single Bed",
+    "floor": "Floor A-1",
+    "facilities": "Fan, Wifi, Shower",
+    "rate": "300",
+    "status": "ACTIVE",
+    "image": "https://images.unsplash.com/photo-1551882547-ff43c636ff74?q=80&w=400"
+  }
+]

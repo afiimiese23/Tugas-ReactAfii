@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { FaChevronDown, FaEllipsisH } from "react-icons/fa";
-import roomData from "../../data/roomListData.json"; // Import data JSON kamu
+import { FaChevronDown, FaEllipsisH, FaPhoneAlt } from "react-icons/fa";
+import employees from "../../data/employeeData.json";
 
-export default function Rooms() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("All Rooms");
-  const tabs = ["All Rooms", "Active Room", "Booked Room"];
+export default function EmployersList() {
+  const [activeTab, setActiveTab] = useState("All Employee");
+  const tabs = ["All Employee", "Active Employee", "Inactive Employee"];
 
   return (
     <div className="p-8 bg-[#EEEEEE] min-h-screen font-['Poppins'] text-[#113D32]">
@@ -30,11 +29,8 @@ export default function Rooms() {
         </div>
 
         <div className="flex gap-3">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-[#113D32] text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-green-900/20 active:scale-95 transition-transform"
-          >
-            + New Rooms
+          <button className="bg-[#113D32] text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-green-900/20 active:scale-95 transition-transform">
+            + New Employee
           </button>
           <button className="bg-white border border-gray-200 text-[#113D32] px-6 py-2.5 rounded-xl flex items-center gap-2 font-bold text-sm shadow-sm">
             Newest <FaChevronDown className="text-[#3AB449] text-[10px]" />
@@ -46,21 +42,20 @@ export default function Rooms() {
       <div className="bg-white rounded-[24px] shadow-sm overflow-hidden border border-gray-100">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="text-[10px] uppercase tracking-widest text-gray-400 font-bold border-b border-gray-50 bg-white">
+            <tr className="text-[10px] uppercase tracking-widest text-gray-400 font-bold border-b border-gray-50">
               <th className="p-5 w-12 text-center">
                  <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
               </th>
-              <th className="p-5">Room Name</th>
-              <th className="p-5">Bed Type</th>
-              <th className="p-5">Room Floor</th>
-              <th className="p-5">Facilities</th>
-              <th className="p-5">Rate</th>
+              <th className="p-5">Name</th>
+              <th className="p-5">Job Desk</th>
+              <th className="p-5">Schedule</th>
+              <th className="p-5">Contact</th>
               <th className="p-5">Status</th>
               <th className="p-5"></th>
             </tr>
           </thead>
-          <tbody className="text-xs">
-            {roomData.map((room, index) => (
+          <tbody className="text-[11px]">
+            {employees.map((emp, index) => (
               <tr key={index} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group">
                 <td className="p-5 text-center">
                   <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
@@ -69,37 +64,39 @@ export default function Rooms() {
                 <td className="p-5">
                   <div className="flex items-center gap-4">
                     <img 
-                      src={room.image} 
-                      className="w-20 h-14 rounded-xl object-cover shadow-sm border border-gray-100 group-hover:scale-105 transition-transform" 
-                      alt="room" 
+                      src={emp.image} 
+                      className="w-12 h-12 rounded-xl object-cover shadow-sm border border-gray-100" 
+                      alt="avatar" 
                     />
                     <div>
-                      <p className="text-[10px] text-[#3AB449] font-black mb-1">{room.id}</p>
-                      <p className="font-bold text-[#113D32]">{room.name}</p>
+                      <p className="font-bold text-[#113D32] text-sm">{emp.name}</p>
+                      <p className="text-[10px] text-[#3AB449] font-bold">{emp.id}</p>
+                      <p className="text-[9px] text-gray-400 italic font-medium">Joined on Aug 2th 2017</p>
                     </div>
                   </div>
                 </td>
 
-                <td className="p-5 text-[#6E6E6E] font-medium">{room.bedType}</td>
-                <td className="p-5 text-[#6E6E6E] font-medium">{room.floor}</td>
-                
-                <td className="p-5 text-[#6E6E6E] font-medium max-w-[200px] leading-relaxed">
-                  {room.facilities}
+                <td className="p-5 text-[#6E6E6E] font-medium max-w-[250px] leading-relaxed">
+                  {emp.jobDesk}
                 </td>
 
                 <td className="p-5">
-                  <p className="text-[10px] text-gray-400 font-medium">Price</p>
-                  <p className="font-bold text-[#113D32]">₹{room.rate} <span className="text-gray-400 font-normal">/night</span></p>
+                  <p className="font-bold text-[#113D32]">{emp.schedule}</p>
+                  <p className="text-gray-400 font-medium">Check schedule</p>
                 </td>
 
-                {/* STATUS BADGE */}
                 <td className="p-5">
-                  <span className={`px-4 py-2 rounded-xl text-[10px] font-black text-center inline-block min-w-[85px] tracking-wider ${
-                    room.status === "ACTIVE" 
-                    ? "bg-[#E6F3EF] text-[#3AB449]" 
-                    : "bg-[#FFEEEE] text-[#FF5B5B]"
+                  <div className="flex items-center gap-2 font-bold text-[#113D32]">
+                    <FaPhoneAlt className="text-gray-400 text-[10px]" />
+                    {emp.contact}
+                  </div>
+                </td>
+
+                <td className="p-5">
+                  <span className={`font-black tracking-wider ${
+                    emp.status === "ACTIVE" ? "text-[#3AB449]" : "text-[#FF5B5B]"
                   }`}>
-                    {room.status}
+                    {emp.status}
                   </span>
                 </td>
 
@@ -112,13 +109,13 @@ export default function Rooms() {
         </table>
       </div>
 
-      {/* FOOTER / PAGINATION MOCKUP */}
+      {/* PAGINATION */}
       <div className="flex justify-between items-center mt-6 text-[11px] text-[#6E6E6E] font-semibold px-2">
-        <p>Showing 1 to {roomData.length} of {roomData.length} entries</p>
+        <p>Showing 1 to 6 of 30 entries</p>
         <div className="flex gap-2">
-          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors">Prev</button>
-          <button className="px-4 py-2 bg-[#113D32] text-white rounded-lg shadow-md shadow-green-900/10">1</button>
-          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors">Next</button>
+          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg hover:bg-gray-50">Prev</button>
+          <button className="px-4 py-2 bg-[#113D32] text-white rounded-lg">1</button>
+          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg">Next</button>
         </div>
       </div>
     </div>
