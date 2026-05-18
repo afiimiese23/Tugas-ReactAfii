@@ -6,6 +6,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Forgot from './pages/auth/Forgot';
 
+
 // Lazy Load Pages
 const Dashboard = React.lazy(() => import("./pages/main/Dashboard"));
 const Booking = React.lazy(() => import("./pages/main/Booking"));
@@ -18,6 +19,7 @@ const MainLayout = React.lazy(() => import("./layouts/MainLayout"));
 const Loading = React.lazy(() => import("./components/Loading"));
 const RoomDetail = React.lazy(() => import("./pages/main/RoomDetail"));
 const GuestDetail = React.lazy(() => import("./pages/main/GuestDetail"));
+const Components = React.lazy(() => import("./pages//main/Components"))
 
 export default function App() {
   return (
@@ -29,10 +31,11 @@ export default function App() {
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/guests/:id" element={<GuestDetail />} />
                 <Route path="/guests" element={<Guests />} />
-                <Route path="/employers" element={<Employers />} /> {/* Sesuai link Sidebar */}
+                <Route path="/employers" element={<Employers />} />
                 <Route path="/rooms" element={<Rooms />} />
                 <Route path="/rooms/:id" element={<RoomDetail />} />
-                <Route path="/settings" element={<Settings />} /> {/* Sesuai link Sidebar */}
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/components" element={<Components />} />
             </Route>
 
             {/* Auth Layout Routes */}
