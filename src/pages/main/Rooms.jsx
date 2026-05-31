@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaChevronDown, FaEllipsisH } from "react-icons/fa";
 
+
 // Import StayZone Components
 import Container from "../../components/Container";
 import Table from "../../components/Table";
