@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { FaChevronDown, FaEllipsisH } from "react-icons/fa";
 
+// --- IMPORT SHADCN COMPONENTS ---
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Import StayZone Components
+// --- IMPORT STAYZONE COMPONENTS ---
 import Container from "../../components/Container";
 import Table from "../../components/Table";
 import Badge from "../../components/Badge";
@@ -10,7 +19,6 @@ import Button from "../../components/Button";
 import Card from "../../components/Card";
 import Modal from "../../components/Modal";
 import InputField from "../../components/InputField";
-import SelectField from "../../components/SelectField";
 
 // Import Data Mock
 import roomData from "../../data/roomListData.json";
@@ -20,7 +28,6 @@ export default function Rooms() {
   const [activeTab, setActiveTab] = useState("All Rooms");
   const tabs = ["All Rooms", "Active Room", "Booked Room"];
 
-  // Definisi Header Tabel
   const tableHeaders = [
     <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />,
     "Room Name",
@@ -37,23 +44,21 @@ export default function Rooms() {
       
       {/* HEADER SECTION */}
       <div className="flex justify-between items-center mb-8 px-2">
-        {/* TABS NAVIGATION */}
-        <div className="flex space-x-8 border-b border-gray-200">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-4 text-sm font-bold transition-all relative ${
-                activeTab === tab ? "text-[#113D32]" : "text-gray-400"
-              }`}
-            >
-              {tab}
-              {activeTab === tab && (
-                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#3AB449] rounded-t-full" />
-              )}
-            </button>
-          ))}
-        </div>
+        
+        {/* KOMPONEN 1: SHADCN TABS */}
+        <Tabs defaultValue="All Rooms" onValueChange={setActiveTab}>
+          <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 gap-8">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="rounded-none border-b-2 border-transparent px-0 pb-4 text-sm font-bold data-[state=active]:border-[#3AB449] data-[state=active]:text-[#113D32] data-[state=active]:bg-transparent text-gray-400 transition-all shadow-none"
+              >
+                {tab}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
 
         {/* TOP ACTIONS */}
         <div className="flex gap-3">
@@ -81,7 +86,6 @@ export default function Rooms() {
               <td className="p-5 text-center">
                 <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
               </td>
-              
               <td className="p-5">
                 <div className="flex items-center gap-4">
                   <img 
@@ -95,27 +99,22 @@ export default function Rooms() {
                   </div>
                 </div>
               </td>
-
               <td className="p-5 text-[#6E6E6E] font-medium">{room.bedType}</td>
               <td className="p-5 text-[#6E6E6E] font-medium">{room.floor}</td>
-              
               <td className="p-5 text-[#6E6E6E] font-medium max-w-[200px] leading-relaxed">
                 {room.facilities}
               </td>
-
               <td className="p-5">
                 <p className="text-[10px] text-gray-400 font-medium">Price</p>
                 <p className="font-bold text-[#113D32]">
                   ₹{room.rate} <span className="text-gray-400 font-normal">/night</span>
                 </p>
               </td>
-
               <td className="p-5">
                 <Badge type={room.status === "ACTIVE" ? "success" : "danger"}>
                   {room.status}
                 </Badge>
               </td>
-
               <td className="p-5 text-center text-gray-300 cursor-pointer hover:text-[#113D32]">
                 <FaEllipsisH />
               </td>
@@ -123,22 +122,6 @@ export default function Rooms() {
           ))}
         </Table>
       </Card>
-
-      {/* FOOTER / PAGINATION */}
-      <div className="flex justify-between items-center mt-6 text-[11px] text-[#6E6E6E] font-semibold px-2">
-        <p>Showing 1 to {roomData.length} of {roomData.length} entries</p>
-        <div className="flex gap-2">
-          <Button type="secondary" className="bg-white border-gray-200 px-4 py-2">
-            Prev
-          </Button>
-          <Button className="px-4 py-2 shadow-md shadow-green-900/10">
-            1
-          </Button>
-          <Button type="secondary" className="bg-white border-gray-200 px-4 py-2">
-            Next
-          </Button>
-        </div>
-      </div>
 
       {/* MODAL UNTUK TAMBAH KAMAR BARU */}
       <Modal 
@@ -148,18 +131,28 @@ export default function Rooms() {
       >
         <div className="space-y-4">
           <InputField label="Room Name" placeholder="e.g. Deluxe Ocean View" />
+          
           <div className="grid grid-cols-2 gap-4">
-            <SelectField 
-              label="Bed Type" 
-              options={[
-                { value: "single", label: "Single Bed" },
-                { value: "double", label: "Double Bed" },
-                { value: "suite", label: "Suite" }
-              ]} 
-            />
+            {/* KOMPONEN 2: SHADCN SELECT */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-[#113D32]">Bed Type</label>
+              <Select>
+                <SelectTrigger className="w-full bg-gray-50 border-gray-200 rounded-xl h-11 focus:ring-[#3AB449]">
+                  <SelectValue placeholder="Select Bed Type" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-gray-100 rounded-xl shadow-xl">
+                  <SelectItem value="single">Single Bed</SelectItem>
+                  <SelectItem value="double">Double Bed</SelectItem>
+                  <SelectItem value="suite">Suite</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <InputField label="Floor" placeholder="e.g. Floor 3" />
           </div>
+
           <InputField label="Rate per Night (₹)" type="number" placeholder="1500" />
+          
           <div className="pt-4 flex justify-end space-x-2 border-t border-gray-100">
             <Button type="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
             <Button onClick={() => {

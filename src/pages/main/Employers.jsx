@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaChevronDown, FaEllipsisH, FaPhoneAlt } from "react-icons/fa";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // Import StayZone Components
 import Container from "../../components/Container";
@@ -32,34 +33,41 @@ export default function EmployersList() {
       
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-2">
-        {/* TABS NAVIGATION */}
-        <div className="flex space-x-8 border-b border-gray-200 w-full md:w-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-4 text-sm font-bold transition-all relative ${
-                activeTab === tab ? "text-[#113D32]" : "text-gray-400"
-              }`}
-            >
-              {tab}
-              {activeTab === tab && (
-                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#3AB449] rounded-t-full" />
-              )}
-            </button>
-          ))}
-        </div>
+        {/* TABS NAVIGATION MENGGUNAKAN SHADCN */}
+        <Tabs defaultValue="All Employee" className="w-full" onValueChange={setActiveTab}>
+          <div className="flex justify-between items-center mb-8 gap-4 px-2">
+            
+            <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 gap-8">
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="rounded-none border-b-2 border-transparent px-0 pb-4 text-sm font-bold 
+                    data-[state=active]:border-[#3AB449] 
+                    data-[state=active]:text-[#113D32] 
+                    data-[state=active]:bg-transparent 
+                    text-gray-400 transition-all 
+                    focus-visible:outline-none focus-visible:ring-0  /* Menghilangkan kotak hijau default */
+                    shadow-none"
+                >
+                  {tab}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-        {/* TOP ACTIONS */}
-        <div className="flex gap-3 w-full md:w-auto justify-end">
-          <Button className="px-6 py-2.5 shadow-lg shadow-green-900/20">
-            + New Employee
-          </Button>
-          <Button type="secondary" className="bg-white border-gray-200 px-6 py-2.5 flex items-center gap-2">
-            <span className="text-[#113D32]">Newest</span>
-            <FaChevronDown className="text-[#3AB449] text-[10px]" />
-          </Button>
-        </div>
+            {/* TOP ACTIONS */}
+            <div className="flex gap-3 w-full md:w-auto justify-end">
+              <Button className="px-6 py-2.5 shadow-lg shadow-green-900/20">
+                + New Employee
+              </Button>
+              <Button type="secondary" className="bg-white border-gray-200 px-6 py-2.5 flex items-center gap-2">
+                <span className="text-[#113D32]">Newest</span>
+                <FaChevronDown className="text-[#3AB449] text-[10px]" />
+              </Button>
+            </div>
+            
+          </div>
+        </Tabs>
       </div>
 
       {/* TABLE SECTION*/}

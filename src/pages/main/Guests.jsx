@@ -1,13 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Link dikembalikan
+import { Link } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 
-// Import StayZone Components
+// --- IMPORT SHADCN COMPONENTS ---
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+// --- IMPORT STAYZONE COMPONENTS (Tombol lamamu tetap di sini) ---
 import Container from "../../components/Container";
 import Table from "../../components/Table";
 import Badge from "../../components/Badge";
 import Avatar from "../../components/Avatar";
-import Button from "../../components/Button";
+import Button from "../../components/Button"; // <--- Tombol kustom kamu
 import Card from "../../components/Card";
 
 // Import Data Mock
@@ -17,7 +28,6 @@ export default function Guests() {
   const [activeTab, setActiveTab] = useState("All Guest");
   const tabs = ["All Guest", "Pending", "Booked", "Canceled", "Refund"];
 
-  // Header kolom untuk komponen Table
   const tableHeaders = [
     <input type="checkbox" className="w-4 h-4 rounded border-gray-300 accent-[#3AB449]" />,
     "Guest",
@@ -42,6 +52,7 @@ export default function Guests() {
         </div>
         
         <div className="flex space-x-3">
+          {/* Menggunakan Button Kustom Kamu */}
           <Button className="flex items-center space-x-3 text-[11px] px-4">
             <span>10 June 2024 - 9 July 2024</span>
             <FaChevronDown className="text-[10px]" />
@@ -54,45 +65,32 @@ export default function Guests() {
         </div>
       </div>
 
-      {/* TABS NAVIGATION */}
-      <div className="flex space-x-10 border-b border-gray-200 mb-6 overflow-x-auto px-2">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`pb-4 text-xs font-bold transition-all relative whitespace-nowrap ${
-              activeTab === tab ? "text-[#113D32]" : "text-[#6E6E6E]"
-            }`}
-          >
-            {tab}
-            {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#3AB449] rounded-t-full"></div>
-            )}
-          </button>
-        ))}
-      </div>
+      {/* SHADCN TABS (Komponen 1) */}
+      <Tabs defaultValue="All Guest" onValueChange={setActiveTab} className="mb-6">
+        <TabsList className="bg-transparent border-b border-gray-200 rounded-none h-auto p-0 gap-10 overflow-x-auto w-full justify-start">
+          {tabs.map((tab) => (
+            <TabsTrigger
+              key={tab}
+              value={tab}
+              className="rounded-none border-b-2 border-transparent px-0 pb-4 text-xs font-bold data-[state=active]:border-[#3AB449] data-[state=active]:text-[#113D32] data-[state=active]:bg-transparent text-[#6E6E6E] transition-all shadow-none whitespace-nowrap"
+            >
+              {tab}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* TABLE SECTION */}
       <Card className="p-0 overflow-hidden border-none shadow-sm">
         <Table headers={tableHeaders}>
           {guestData.map((guest) => (
-            <tr
-              key={guest.id}
-              className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
-            >
+            <tr key={guest.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
               <td className="p-5 text-center">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-gray-300 accent-[#3AB449]"
-                />
+                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 accent-[#3AB449]" />
               </td>
 
-              {/* GUEST INFO - DENGAN LINK AKTIF KE DETAIL */}
               <td className="p-5">
-                <Link
-                  to={`/guests/${guest.id}`}
-                  className="flex items-center space-x-3 group"
-                >
+                <Link to={`/guests/${guest.id}`} className="flex items-center space-x-3 group">
                   <Avatar name={guest.name} />
                   <div className="flex flex-col">
                     <span className="font-bold text-[#113D32] group-hover:text-[#3AB449] transition-all">
@@ -105,35 +103,38 @@ export default function Guests() {
                 </Link>
               </td>
 
-              <td className="p-5 text-[#6E6E6E] font-medium">
-                {guest.orderDate}
-              </td>
+              <td className="p-5 text-[#6E6E6E] font-medium">{guest.orderDate}</td>
+              <td className="p-5 text-gray-800 font-bold">{guest.checkIn}</td>
+              <td className="p-5 text-gray-800 font-bold">{guest.checkOut}</td>
 
-              <td className="p-5 text-gray-800 font-bold">
-                {guest.checkIn}
-              </td>
-
-              <td className="p-5 text-gray-800 font-bold">
-                {guest.checkOut}
-              </td>
-
+              {/* SHADCN SHEET (Komponen 3) - Menggunakan Button Kustom Kamu */}
               <td className="p-5 text-center">
-                <Button 
-                  type="secondary" 
-                  className="bg-[#E6F3EF] text-[#113D32] hover:bg-[#113D32] hover:text-white border-none text-[10px] font-bold px-4 py-2"
-                >
-                  View Notes
-                </Button>
+                <Sheet>
+                    <SheetTrigger asChild>
+                      {/* Ganti Button (kapital) jadi button (kecil) buat ngetes */}
+                      <button className="bg-blue-500 text-white p-2"> 
+                        View Notes 
+                      </button>
+                    </SheetTrigger>
+                  <SheetContent className="bg-white">
+                    <SheetHeader>
+                      <SheetTitle className="text-[#113D32] font-bold">Guest Special Request</SheetTitle>
+                      <SheetDescription className="pt-4 text-gray-600 leading-relaxed">
+                        <div className="bg-gray-50 p-4 rounded-xl mb-4 italic">
+                          "{guest.specialRequest || "No special requests."}"
+                        </div>
+                        <p><strong>Guest ID:</strong> {guest.id}</p>
+                        <p><strong>Room:</strong> {guest.roomType}</p>
+                      </SheetDescription>
+                    </SheetHeader>
+                  </SheetContent>
+                </Sheet>
               </td>
 
-              <td className="p-5 text-[#6E6E6E] font-bold italic">
-                {guest.roomType}
-              </td>
+              <td className="p-5 text-[#6E6E6E] font-bold italic">{guest.roomType}</td>
 
               <td className="p-5">
-                <Badge 
-                  type={guest.status === "Refund" || guest.status === "Canceled" ? "danger" : "success"}
-                >
+                <Badge type={guest.status === "Refund" || guest.status === "Canceled" ? "danger" : "success"}>
                   {guest.status}
                 </Badge>
               </td>
