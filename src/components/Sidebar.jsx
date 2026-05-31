@@ -78,6 +78,14 @@ export default function Sidebar() {
                         </NavLink>
                     </li>  
 
+                    {/* COMPONENTS P11 */}
+                    <li>
+                        <NavLink id="menu-4" to="/components-p11" className={menuClass}>
+                            <MdListAlt className="mr-4 text-xl" />
+                            Components P11
+                        </NavLink>
+                    </li>  
+
                     <li>
                         <NavLink to="/settings" className={menuClass}>
                             <MdSettings className="text-xl" />

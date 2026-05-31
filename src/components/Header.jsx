@@ -33,6 +33,14 @@ export default function Header() {
             return "Employers";
         }
 
+        if (location.pathname.startsWith("/components")) {
+            return "Components";
+        }
+
+        if (location.pathname.startsWith("/components-p11")) {
+            return "ComponentsP11";
+        }
+
         return "Dashboard";
     };
 

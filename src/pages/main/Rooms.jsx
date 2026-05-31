@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaChevronDown, FaEllipsisH } from "react-icons/fa";
-import roomData from "../../data/roomListData.json"; // Import data JSON kamu
+import roomData from "../../data/roomListData.json";
 
 export default function Rooms() {
   const [isModalOpen, setIsModalOpen] = useState(false);

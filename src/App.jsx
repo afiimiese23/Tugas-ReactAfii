@@ -19,7 +19,8 @@ const MainLayout = React.lazy(() => import("./layouts/MainLayout"));
 const Loading = React.lazy(() => import("./components/Loading"));
 const RoomDetail = React.lazy(() => import("./pages/main/RoomDetail"));
 const GuestDetail = React.lazy(() => import("./pages/main/GuestDetail"));
-const Components = React.lazy(() => import("./pages//main/Components"))
+const Components = React.lazy(() => import("./pages/main/Components"));
+const ComponentsP11 = React.lazy(() => import("./pages/main/ComponentsP11"));
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/rooms/:id" element={<RoomDetail />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/components" element={<Components />} />
+                <Route path="/components-p11" element={<ComponentsP11 />} />
             </Route>
 
             {/* Auth Layout Routes */}
