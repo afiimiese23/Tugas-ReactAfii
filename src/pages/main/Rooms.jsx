@@ -1,5 +1,17 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaChevronDown, FaEllipsisH } from "react-icons/fa";
+
+// Import StayZone Components
+import Container from "../../components/Container";
+import Table from "../../components/Table";
+import Badge from "../../components/Badge";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import Modal from "../../components/Modal";
+import InputField from "../../components/InputField";
+import SelectField from "../../components/SelectField";
+
+// Import Data Mock
 import roomData from "../../data/roomListData.json";
 
 export default function Rooms() {
@@ -7,11 +19,24 @@ export default function Rooms() {
   const [activeTab, setActiveTab] = useState("All Rooms");
   const tabs = ["All Rooms", "Active Room", "Booked Room"];
 
+  // Definisi Header Tabel
+  const tableHeaders = [
+    <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />,
+    "Room Name",
+    "Bed Type",
+    "Room Floor",
+    "Facilities",
+    "Rate",
+    "Status",
+    ""
+  ];
+
   return (
-    <div className="p-8 bg-[#EEEEEE] min-h-screen font-['Poppins'] text-[#113D32]">
+    <Container className="bg-[#EEEEEE] min-h-screen py-8">
       
       {/* HEADER SECTION */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-8 px-2">
+        {/* TABS NAVIGATION */}
         <div className="flex space-x-8 border-b border-gray-200">
           {tabs.map((tab) => (
             <button
@@ -29,98 +54,121 @@ export default function Rooms() {
           ))}
         </div>
 
+        {/* TOP ACTIONS */}
         <div className="flex gap-3">
-          <button
+          <Button 
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#113D32] text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-green-900/20 active:scale-95 transition-transform"
+            className="px-6 py-2.5 shadow-lg shadow-green-900/20"
           >
             + New Rooms
-          </button>
-          <button className="bg-white border border-gray-200 text-[#113D32] px-6 py-2.5 rounded-xl flex items-center gap-2 font-bold text-sm shadow-sm">
-            Newest <FaChevronDown className="text-[#3AB449] text-[10px]" />
-          </button>
+          </Button>
+          <Button 
+            type="secondary" 
+            className="bg-white border-gray-200 px-6 py-2.5 flex items-center gap-2"
+          >
+            <span className="text-[#113D32]">Newest</span>
+            <FaChevronDown className="text-[#3AB449] text-[10px]" />
+          </Button>
         </div>
       </div>
 
       {/* TABLE SECTION */}
-      <div className="bg-white rounded-[24px] shadow-sm overflow-hidden border border-gray-100">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="text-[10px] uppercase tracking-widest text-gray-400 font-bold border-b border-gray-50 bg-white">
-              <th className="p-5 w-12 text-center">
-                 <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
-              </th>
-              <th className="p-5">Room Name</th>
-              <th className="p-5">Bed Type</th>
-              <th className="p-5">Room Floor</th>
-              <th className="p-5">Facilities</th>
-              <th className="p-5">Rate</th>
-              <th className="p-5">Status</th>
-              <th className="p-5"></th>
-            </tr>
-          </thead>
-          <tbody className="text-xs">
-            {roomData.map((room, index) => (
-              <tr key={index} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group">
-                <td className="p-5 text-center">
-                  <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
-                </td>
-                
-                <td className="p-5">
-                  <div className="flex items-center gap-4">
-                    <img 
-                      src={room.image} 
-                      className="w-20 h-14 rounded-xl object-cover shadow-sm border border-gray-100 group-hover:scale-105 transition-transform" 
-                      alt="room" 
-                    />
-                    <div>
-                      <p className="text-[10px] text-[#3AB449] font-black mb-1">{room.id}</p>
-                      <p className="font-bold text-[#113D32]">{room.name}</p>
-                    </div>
+      <Card className="p-0 overflow-hidden border-none shadow-sm">
+        <Table headers={tableHeaders}>
+          {roomData.map((room, index) => (
+            <tr key={index} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors group">
+              <td className="p-5 text-center">
+                <input type="checkbox" className="w-4 h-4 rounded accent-[#3AB449] cursor-pointer" />
+              </td>
+              
+              <td className="p-5">
+                <div className="flex items-center gap-4">
+                  <img 
+                    src={room.image} 
+                    className="w-20 h-14 rounded-xl object-cover shadow-sm border border-gray-100 group-hover:scale-105 transition-transform" 
+                    alt={room.name} 
+                  />
+                  <div>
+                    <p className="text-[10px] text-[#3AB449] font-black mb-1">{room.id}</p>
+                    <p className="font-bold text-[#113D32]">{room.name}</p>
                   </div>
-                </td>
+                </div>
+              </td>
 
-                <td className="p-5 text-[#6E6E6E] font-medium">{room.bedType}</td>
-                <td className="p-5 text-[#6E6E6E] font-medium">{room.floor}</td>
-                
-                <td className="p-5 text-[#6E6E6E] font-medium max-w-[200px] leading-relaxed">
-                  {room.facilities}
-                </td>
+              <td className="p-5 text-[#6E6E6E] font-medium">{room.bedType}</td>
+              <td className="p-5 text-[#6E6E6E] font-medium">{room.floor}</td>
+              
+              <td className="p-5 text-[#6E6E6E] font-medium max-w-[200px] leading-relaxed">
+                {room.facilities}
+              </td>
 
-                <td className="p-5">
-                  <p className="text-[10px] text-gray-400 font-medium">Price</p>
-                  <p className="font-bold text-[#113D32]">₹{room.rate} <span className="text-gray-400 font-normal">/night</span></p>
-                </td>
+              <td className="p-5">
+                <p className="text-[10px] text-gray-400 font-medium">Price</p>
+                <p className="font-bold text-[#113D32]">
+                  ₹{room.rate} <span className="text-gray-400 font-normal">/night</span>
+                </p>
+              </td>
 
-                {/* STATUS BADGE */}
-                <td className="p-5">
-                  <span className={`px-4 py-2 rounded-xl text-[10px] font-black text-center inline-block min-w-[85px] tracking-wider ${
-                    room.status === "ACTIVE" 
-                    ? "bg-[#E6F3EF] text-[#3AB449]" 
-                    : "bg-[#FFEEEE] text-[#FF5B5B]"
-                  }`}>
-                    {room.status}
-                  </span>
-                </td>
+              <td className="p-5">
+                <Badge type={room.status === "ACTIVE" ? "success" : "danger"}>
+                  {room.status}
+                </Badge>
+              </td>
 
-                <td className="p-5 text-center text-gray-300 cursor-pointer hover:text-[#113D32]">
-                  <FaEllipsisH />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <td className="p-5 text-center text-gray-300 cursor-pointer hover:text-[#113D32]">
+                <FaEllipsisH />
+              </td>
+            </tr>
+          ))}
+        </Table>
+      </Card>
 
-      {/* FOOTER / PAGINATION MOCKUP */}
+      {/* FOOTER / PAGINATION */}
       <div className="flex justify-between items-center mt-6 text-[11px] text-[#6E6E6E] font-semibold px-2">
         <p>Showing 1 to {roomData.length} of {roomData.length} entries</p>
         <div className="flex gap-2">
-          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors">Prev</button>
-          <button className="px-4 py-2 bg-[#113D32] text-white rounded-lg shadow-md shadow-green-900/10">1</button>
-          <button className="px-4 py-2 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors">Next</button>
+          <Button type="secondary" className="bg-white border-gray-200 px-4 py-2">
+            Prev
+          </Button>
+          <Button className="px-4 py-2 shadow-md shadow-green-900/10">
+            1
+          </Button>
+          <Button type="secondary" className="bg-white border-gray-200 px-4 py-2">
+            Next
+          </Button>
         </div>
       </div>
-    </div>
+
+      {/* MODAL UNTUK TAMBAH KAMAR BARU */}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        title="Add New Room - StayZone"
+      >
+        <div className="space-y-4">
+          <InputField label="Room Name" placeholder="e.g. Deluxe Ocean View" />
+          <div className="grid grid-cols-2 gap-4">
+            <SelectField 
+              label="Bed Type" 
+              options={[
+                { value: "single", label: "Single Bed" },
+                { value: "double", label: "Double Bed" },
+                { value: "suite", label: "Suite" }
+              ]} 
+            />
+            <InputField label="Floor" placeholder="e.g. Floor 3" />
+          </div>
+          <InputField label="Rate per Night (₹)" type="number" placeholder="1500" />
+          <div className="pt-4 flex justify-end space-x-2 border-t border-gray-100">
+            <Button type="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button onClick={() => {
+              alert("Room data saved!");
+              setIsModalOpen(false);
+            }}>Save Room</Button>
+          </div>
+        </div>
+      </Modal>
+
+    </Container>
   );
 }

@@ -50,13 +50,6 @@ export default function Sidebar() {
                     </li>
 
                     <li>
-                        <NavLink to="/guest-details" className={menuClass}>
-                            <MdPersonSearch className="text-xl" />
-                            <span className="text-sm">Guest Details</span>
-                        </NavLink>
-                    </li>
-
-                    <li>
                         <NavLink to="/employers" className={menuClass}>
                             <MdListAlt className="text-xl" />
                             <span className="text-sm">Employers List</span>
