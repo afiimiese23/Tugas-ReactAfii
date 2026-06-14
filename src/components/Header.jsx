@@ -41,6 +41,10 @@ export default function Header() {
             return "ComponentsP11";
         }
 
+        if (location.pathname.startsWith("/user")) {
+            return "User";
+        }
+
         return "Dashboard";
     };
 

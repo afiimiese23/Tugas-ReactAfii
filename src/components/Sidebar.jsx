@@ -5,7 +5,8 @@ import {
     MdSettings, 
     MdLogout,
     MdMeetingRoom,
-    MdPersonSearch
+    MdPersonSearch,
+    MdPerson
 } from "react-icons/md";
 import { FaHotel } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -78,6 +79,14 @@ export default function Sidebar() {
                             Components P11
                         </NavLink>
                     </li>  
+
+                    {/* USER */}
+                    <li>
+                        <NavLink id="menu-4" to="/user" className={menuClass}>
+                            <MdPerson className="mr-4 text-xl" />
+                            User
+                        </NavLink>
+                    </li>                    
 
                     <li>
                         <NavLink to="/settings" className={menuClass}>
