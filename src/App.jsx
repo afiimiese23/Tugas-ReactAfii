@@ -5,6 +5,7 @@ import AuthLayout from './layouts/AuthLayout';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Forgot from './pages/auth/Forgot';
+import LandingPage from './pages/guest/LandingPage';
 
 
 // Lazy Load Pages
@@ -41,6 +42,9 @@ export default function App() {
                 <Route path="/components-p11" element={<ComponentsP11 />} />
                 <Route path="/user" element={<User />} />
             </Route>
+
+            {/* Guest / Public Landing Page */}
+            <Route path="/landing" element={<LandingPage />} />
 
             {/* Auth Layout Routes */}
             <Route element={<AuthLayout/>}>
