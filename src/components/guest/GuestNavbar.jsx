@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Beranda", href: "#beranda" },
@@ -10,6 +11,7 @@ const navLinks = [
 
 export default function GuestNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-green-100 bg-white/95 backdrop-blur-sm shadow-sm">
@@ -46,7 +48,7 @@ export default function GuestNavbar() {
               variant="default"
               size="default"
               className="bg-[#00B074] hover:bg-[#00B074]/90 text-white px-5"
-              disabled
+              onClick={() => navigate("/login")}
             >
               Masuk / Daftar
             </Button>
@@ -80,7 +82,7 @@ export default function GuestNavbar() {
                 variant="default"
                 size="default"
                 className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
-                disabled
+                onClick={() => { navigate("/login"); setMenuOpen(false); }}
               >
                 Masuk / Daftar
               </Button>

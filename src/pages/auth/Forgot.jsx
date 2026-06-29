@@ -1,47 +1,100 @@
+import { useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
+import { ImSpinner2 } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 export default function Forgot() {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [sent, setSent] = useState(false);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setLoading(true);
+        // Simulasi pengiriman link reset
+        setTimeout(() => {
+            setLoading(false);
+            setSent(true);
+        }, 800);
+    }
+
     return (
         <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2 text-center">
-                Forgot Your Password?
+                Lupa Password?
             </h2>
-            
             <p className="text-sm text-gray-500 mb-6 text-center">
-                Enter your email to receive a password reset link for your hotel account.
+                Masukkan email akun Anda untuk menerima link reset password.
             </p>
 
-            <form>
-                <div className="mb-5">
-                    <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+            {sent ? (
+                <div className="rounded-2xl bg-green-50 border border-green-200 p-5 text-center space-y-3">
+                    <div className="text-4xl">📩</div>
+                    <p className="text-sm font-semibold text-[#1a3c2e]">
+                        Link reset password telah dikirim!
+                    </p>
+                    <p className="text-xs text-gray-500">
+                        Silakan cek inbox email <span className="font-medium text-[#00B074]">{email}</span>.
+                    </p>
+                    <button
+                        onClick={() => navigate("/login")}
+                        className="mt-2 w-full bg-[#113D32] hover:bg-[#0D3027] text-white rounded-2xl py-2.5 font-semibold text-sm transition"
                     >
-                        Email Address
-                    </label>
-
-                    <div className="relative">
-                        <input
-                            type="email"
-                            id="email"
-                            className="w-full px-4 py-2 pl-10 bg-gray-50 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="guest@luxurystay.com"
-                        />
-                        <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    </div>
+                        Kembali ke Login
+                    </button>
                 </div>
+            ) : (
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-5">
+                        <label
+                            htmlFor="email"
+                            className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block"
+                        >
+                            Email Address
+                        </label>
+                        <div className="relative">
+                            <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#3AB449] focus:ring-4 focus:ring-green-100 outline-none transition"
+                                placeholder="your@email.com"
+                            />
+                        </div>
+                    </div>
 
-                <button
-                    type="submit"
-                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                >
-                    Send Reset Link
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-[#113D32] hover:bg-[#0D3027] text-white rounded-2xl py-3 font-semibold shadow-lg shadow-emerald-900/10 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <span className="flex items-center justify-center">
+                                <ImSpinner2 className="animate-spin mr-2" />
+                                Mengirim...
+                            </span>
+                        ) : (
+                            "Kirim Link Reset"
+                        )}
+                    </button>
+                </form>
+            )}
 
-            <p className="text-center text-sm text-gray-400 mt-6">
-                Remember your password? <span className="text-yellow-600 cursor-pointer">Back to Login</span>
-            </p>
+            {!sent && (
+                <p className="text-center text-sm text-gray-400 mt-6">
+                    Ingat password Anda?{" "}
+                    <span
+                        className="text-green-600 cursor-pointer hover:underline"
+                        onClick={() => navigate("/login")}
+                    >
+                        Kembali ke Login
+                    </span>
+                </p>
+            )}
         </div>
     );
 }

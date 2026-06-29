@@ -9,16 +9,24 @@ import {
     MdPerson
 } from "react-icons/md";
 import { FaHotel } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "@/lib/auth";
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+
     // Fungsi class untuk NavLink agar sesuai dengan desain StayZone
     const menuClass = ({ isActive }) =>
         `flex cursor-pointer items-center rounded-xl p-3 space-x-3 transition-all ${
             isActive
-                ? "text-white bg-[#ffffff20] font-semibold" // Putih transparan saat aktif
-                : "text-gray-400 hover:text-white hover:bg-[#ffffff10]" // Abu-abu saat idle
+                ? "text-white bg-[#ffffff20] font-semibold"
+                : "text-gray-400 hover:text-white hover:bg-[#ffffff10]"
         }`;
+
+    const handleLogout = () => {
+        signOut();
+        navigate("/");
+    };
 
     return (
         <div className="flex min-h-screen w-64 flex-col bg-[#113D32] p-6 shadow-xl text-white">
@@ -37,59 +45,44 @@ export default function Sidebar() {
             <div className="flex-1">
                 <ul className="space-y-2">
                     <li>
-                        <NavLink to="/" className={menuClass}>
+                        <NavLink to="/admin/dashboard" className={menuClass}>
                             <MdSpaceDashboard className="text-xl" />
                             <span className="text-sm">Dashboard</span>
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/guests" className={menuClass}>
+                        <NavLink to="/admin/guests" className={menuClass}>
                             <MdPeople className="text-xl" />
                             <span className="text-sm">Guest List</span>
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/employers" className={menuClass}>
+                        <NavLink to="/admin/employers" className={menuClass}>
                             <MdListAlt className="text-xl" />
                             <span className="text-sm">Employers List</span>
                         </NavLink>
                     </li>
 
                     <li>
-                        <NavLink to="/rooms" className={menuClass}>
+                        <NavLink to="/admin/rooms" className={menuClass}>
                             <MdMeetingRoom className="text-xl" />
                             <span className="text-sm">Room List</span>
                         </NavLink>
                     </li>
 
-                    {/* COMPONENTS */}
-                    <li>
-                        <NavLink id="menu-4" to="/components" className={menuClass}>
-                            <MdListAlt className="mr-4 text-xl" />
-                            Components
-                        </NavLink>
-                    </li>  
-
-                    {/* COMPONENTS P11 */}
-                    <li>
-                        <NavLink id="menu-4" to="/components-p11" className={menuClass}>
-                            <MdListAlt className="mr-4 text-xl" />
-                            Components P11
-                        </NavLink>
-                    </li>  
 
                     {/* USER */}
                     <li>
-                        <NavLink id="menu-4" to="/user" className={menuClass}>
+                        <NavLink to="/admin/user" className={menuClass}>
                             <MdPerson className="mr-4 text-xl" />
                             User
                         </NavLink>
-                    </li>                    
+                    </li>
 
                     <li>
-                        <NavLink to="/settings" className={menuClass}>
+                        <NavLink to="/admin/settings" className={menuClass}>
                             <MdSettings className="text-xl" />
                             <span className="text-sm">Settings</span>
                         </NavLink>
@@ -101,14 +94,17 @@ export default function Sidebar() {
             <div className="mt-auto pt-6 border-t border-[#ffffff10]">
                 <ul className="space-y-2">
                     <li>
-                        <NavLink to="/logout" className={menuClass}>
+                        <button
+                            onClick={handleLogout}
+                            className="flex w-full cursor-pointer items-center rounded-xl p-3 space-x-3 transition-all text-gray-400 hover:text-white hover:bg-[#ffffff10]"
+                        >
                             <MdLogout className="text-xl" />
                             <span className="text-sm">Logout</span>
-                        </NavLink>
+                        </button>
                     </li>
                 </ul>
-                
-                {/* Brand Info (Opsional) */}
+
+                {/* Brand Info */}
                 <div className="mt-6 px-3">
                     <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold opacity-50">
                         StayZone Admin v1.0

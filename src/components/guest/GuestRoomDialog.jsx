@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, BedDouble, CheckCircle2, Eye, Layers } from "lucide-react";
+import { Users, BedDouble, CheckCircle2, Eye, Layers, LogIn, UserPlus } from "lucide-react";
+import { isLoggedIn, isMember } from "@/lib/auth";
 
 /**
  * @param {{
@@ -17,7 +19,32 @@ import { Users, BedDouble, CheckCircle2, Eye, Layers } from "lucide-react";
  * }} props
  */
 export default function GuestRoomDialog({ room, open, onClose }) {
+  const navigate = useNavigate();
+
   if (!room) return null;
+
+  const loggedIn = isLoggedIn();
+  const memberLoggedIn = isMember();
+
+  function handleBookNow() {
+    onClose();
+    if (memberLoggedIn) {
+      // Sudah login sebagai member → langsung ke booking center
+      navigate("/member/dashboard", { state: { preselectedRoom: room } });
+    } else {
+      // Belum login → arahkan ke login dengan info redirect
+      navigate("/login", { state: { redirectTo: "/member/dashboard", room } });
+    }
+  }
+
+  function handleRegisterFirst() {
+    onClose();
+    // Scroll ke form member di landing page
+    const el = document.getElementById("member");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={(val) => { if (!val) onClose(); }}>
@@ -102,14 +129,45 @@ export default function GuestRoomDialog({ room, open, onClose }) {
             </div>
           </div>
 
-          {/* Action */}
+          {/* ── Action Area ── */}
           <div className="flex flex-col gap-2 pt-1">
-            <Button
-              className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
-              disabled={room.stok === 0}
-            >
-              {room.stok === 0 ? "Kamar Tidak Tersedia" : "Pesan Sekarang (Segera Hadir)"}
-            </Button>
+            {room.stok === 0 ? (
+              <Button disabled className="w-full">
+                Kamar Tidak Tersedia
+              </Button>
+            ) : memberLoggedIn ? (
+              /* Sudah login sebagai member */
+              <Button
+                onClick={handleBookNow}
+                className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
+              >
+                <LogIn size={15} className="mr-2" />
+                Pesan Sekarang
+              </Button>
+            ) : (
+              /* Belum login — tampilkan 2 opsi */
+              <>
+                <Button
+                  onClick={handleBookNow}
+                  className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
+                >
+                  <LogIn size={15} className="mr-2" />
+                  Masuk untuk Memesan
+                </Button>
+                <Button
+                  onClick={handleRegisterFirst}
+                  variant="outline"
+                  className="w-full border-[#00B074] text-[#00B074] hover:bg-green-50"
+                >
+                  <UserPlus size={15} className="mr-2" />
+                  Daftar Member Gratis
+                </Button>
+                <p className="text-center text-xs text-gray-400 mt-1">
+                  Daftar member untuk mendapatkan voucher diskon 20% untuk pemesanan pertama Anda.
+                </p>
+              </>
+            )}
+
             <Button
               variant="outline"
               className="w-full border-gray-200 text-gray-500 hover:bg-gray-50"

@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Gift, CheckCircle2, User, Mail, Phone, Loader2 } from "lucide-react";
+import { Gift, CheckCircle2, User, Mail, Phone, Loader2, ArrowRight } from "lucide-react";
+import { registerMember } from "@/lib/auth";
 
 const LOYALTY_TIERS = [
   {
@@ -39,18 +41,11 @@ const LOYALTY_TIERS = [
 ];
 
 export default function GuestMemberForm() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ nama: "", email: "", whatsapp: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  // null | { nama, email, whatsapp, voucher, timestamp }
-  const [successData, setSuccessData] = useState(null);
-  const [members, setMembers] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("stayzone_members") || "[]");
-    } catch {
-      return [];
-    }
-  });
+  const [successData, setSuccessData] = useState(null); // { nama, email, voucher, password }
 
   // ── Validation ─────────────────────────────────────────────────────────────
   function validate() {
@@ -71,8 +66,8 @@ export default function GuestMemberForm() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   }
 
-  // ── Submit ─────────────────────────────────────────────────────────────────
-  function handleSubmit(e) {
+  // ── Submit = Register Akun Member ──────────────────────────────────────────
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
@@ -81,23 +76,26 @@ export default function GuestMemberForm() {
     }
 
     setLoading(true);
-    // Simulasi async (500ms)
-    setTimeout(() => {
-      const voucher = "SZ-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-      const newMember = {
-        ...form,
-        voucher,
-        timestamp: new Date().toISOString(),
-      };
-      const updated = [...members, newMember];
-      setMembers(updated);
-      try {
-        localStorage.setItem("stayzone_members", JSON.stringify(updated));
-      } catch { /* kuota penuh */ }
-      setSuccessData(newMember);
-      setForm({ nama: "", email: "", whatsapp: "" });
+
+    const result = await registerMember({
+      nama: form.nama.trim(),
+      email: form.email.trim(),
+      whatsapp: form.whatsapp.trim(),
+    });
+
+    if (!result.success) {
+      setErrors({ email: result.error });
       setLoading(false);
-    }, 500);
+      return;
+    }
+
+    setSuccessData(result.member);
+    setForm({ nama: "", email: "", whatsapp: "" });
+    setLoading(false);
+  }
+
+  function handleLoginNow() {
+    navigate("/login");
   }
 
   function handleDaftarLagi() {
@@ -141,7 +139,7 @@ export default function GuestMemberForm() {
           ))}
         </div>
 
-        {/* ── CRM Lead Capture Form ── */}
+        {/* ── CRM Lead Capture / Register Form ── */}
         <div className="mx-auto max-w-2xl">
           <div className="rounded-2xl border border-green-100 bg-gradient-to-br from-[#1a3c2e] to-[#0f2d20] p-8 shadow-xl text-white">
 
@@ -155,7 +153,7 @@ export default function GuestMemberForm() {
                   Gabung StayZone Rewards & Dapatkan Voucher Diskon 20%
                 </h3>
                 <p className="text-green-200/70 text-sm mt-0.5">
-                  untuk Reservasi Pertama Anda!
+                  Daftar gratis, langsung bisa pesan kamar secara online!
                 </p>
               </div>
             </div>
@@ -165,29 +163,56 @@ export default function GuestMemberForm() {
               <div className="rounded-xl bg-[#00B074]/20 border border-[#00B074]/40 p-6 text-center space-y-3">
                 <CheckCircle2 size={40} className="text-[#00B074] mx-auto" />
                 <p className="text-base font-semibold text-white">
-                  Terima kasih{" "}
-                  <span className="text-[#00B074]">{successData.nama}</span>,
-                  pendaftaran member StayZone berhasil!
+                  Selamat datang,{" "}
+                  <span className="text-[#00B074]">{successData.nama}</span>!
+                  Akun member Anda berhasil dibuat.
                 </p>
-                <p className="text-sm text-green-200/80">
-                  Kode voucher telah dikirim ke WhatsApp Anda.
-                </p>
+
+                {/* Voucher */}
                 <div className="inline-flex items-center gap-2 rounded-lg bg-[#00B074]/30 px-4 py-2 border border-[#00B074]/50">
                   <span className="text-xs text-green-200/70">Kode Voucher:</span>
                   <span className="font-mono font-bold text-white text-sm tracking-widest">
                     {successData.voucher}
                   </span>
                 </div>
-                <p className="text-xs text-green-200/50 pt-1">
-                  Total anggota terdaftar: {members.length} member
-                </p>
+
+                {/* Info password otomatis */}
+                <div className="rounded-lg bg-white/10 border border-white/20 px-4 py-3 text-left space-y-1.5">
+                  <p className="text-xs font-semibold text-green-300 uppercase tracking-wider">
+                    Informasi Login Anda
+                  </p>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-green-200/70">Email:</span>
+                    <span className="font-medium text-white">{successData.email}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-green-200/70">Password (auto):</span>
+                    <span className="font-mono font-bold text-[#00B074] tracking-widest">
+                      {successData.password}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-green-200/40 pt-1">
+                    Password dibuat otomatis dari 4 digit terakhir nomor WhatsApp Anda.
+                    Ganti password setelah login pertama.
+                  </p>
+                </div>
+
+                {/* CTA ke Login */}
+                <Button
+                  onClick={handleLoginNow}
+                  className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white font-semibold mt-1"
+                >
+                  <ArrowRight size={15} className="mr-2" />
+                  Masuk & Mulai Pesan Kamar
+                </Button>
+
                 <Button
                   onClick={handleDaftarLagi}
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="mt-2 border-green-400/30 text-green-200 hover:bg-white/10 bg-transparent"
+                  className="text-green-200/50 hover:text-green-200 hover:bg-white/10 text-xs"
                 >
-                  Daftar Akun Lain
+                  Daftarkan Akun Lain
                 </Button>
               </div>
             ) : (
@@ -208,9 +233,7 @@ export default function GuestMemberForm() {
                       className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
                     />
                   </div>
-                  {errors.nama && (
-                    <p className="text-xs text-red-400">{errors.nama}</p>
-                  )}
+                  {errors.nama && <p className="text-xs text-red-400">{errors.nama}</p>}
                 </div>
 
                 {/* Email */}
@@ -229,9 +252,7 @@ export default function GuestMemberForm() {
                       className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
                     />
                   </div>
-                  {errors.email && (
-                    <p className="text-xs text-red-400">{errors.email}</p>
-                  )}
+                  {errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
                 </div>
 
                 {/* WhatsApp */}
@@ -250,9 +271,7 @@ export default function GuestMemberForm() {
                       className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
                     />
                   </div>
-                  {errors.whatsapp && (
-                    <p className="text-xs text-red-400">{errors.whatsapp}</p>
-                  )}
+                  {errors.whatsapp && <p className="text-xs text-red-400">{errors.whatsapp}</p>}
                 </div>
 
                 {/* Submit */}
@@ -275,7 +294,7 @@ export default function GuestMemberForm() {
                 </Button>
 
                 <p className="text-center text-xs text-green-200/40 pt-1">
-                  Data Anda aman dan tidak akan disebarkan ke pihak ketiga.
+                  Password login akan dikirim otomatis ke WhatsApp Anda setelah daftar.
                 </p>
               </form>
             )}
