@@ -1,13 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle,CardDescription } from "@/components/ui/card";
 import { Users, BedDouble } from "lucide-react";
 
 /**
@@ -27,21 +20,20 @@ export default function GuestRoomCard({ room, onViewDetail }) {
 
   return (
     <Card className="group overflow-hidden border border-green-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 p-0 bg-white">
+      
       {/* Room Image */}
       <div className="relative h-48 w-full overflow-hidden">
-        <img
-          src={room.image}
-          alt={`Foto ${room.name}`}
+        <img src={room.image} alt={`Foto ${room.name}`}
           className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${isSoldOut ? "grayscale opacity-70" : ""}`}
-          loading="lazy"
-        />
+          loading="lazy" />
+
         {/* Price overlay */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-3 py-2">
           <p className="text-white font-bold text-sm">
-            {room.price}
-            <span className="font-normal text-white/80 text-xs"> / malam</span>
+            {room.price} <span className="font-normal text-white/80 text-xs"> / malam</span>
           </p>
         </div>
+
         {/* Sold-out ribbon */}
         {isSoldOut && (
           <div className="absolute top-2 right-2">
@@ -50,6 +42,7 @@ export default function GuestRoomCard({ room, onViewDetail }) {
             </Badge>
           </div>
         )}
+
         {/* Stok indicator */}
         {!isSoldOut && room.stok <= 2 && (
           <div className="absolute top-2 right-2">
@@ -84,18 +77,12 @@ export default function GuestRoomCard({ room, onViewDetail }) {
 
       {/* Footer */}
       <CardFooter className="pt-3 bg-transparent border-t-0 pb-4 px-4">
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={isSoldOut}
-          onClick={() => !isSoldOut && onViewDetail(room)}
-          className={
+        <Button variant="outline" size="sm" disabled={isSoldOut} onClick={() => !isSoldOut && onViewDetail(room)} className={
             isSoldOut
               ? "w-full border-gray-200 text-gray-400 cursor-not-allowed"
               : "w-full border-[#00B074] text-[#00B074] hover:bg-[#00B074] hover:text-white transition-colors"
           }
-        >
-          {isSoldOut ? "Tidak Tersedia" : "Lihat Detail"}
+        > {isSoldOut ? "Tidak Tersedia" : "Lihat Detail"}
         </Button>
       </CardFooter>
     </Card>

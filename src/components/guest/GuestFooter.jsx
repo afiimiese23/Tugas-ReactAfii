@@ -20,6 +20,7 @@ export default function GuestFooter() {
               Hotel premium bintang lima yang menyediakan pengalaman menginap
               terbaik di pusat kota Jakarta.
             </p>
+
             {/* Socials */}
             <div className="flex gap-3">
               {[
@@ -27,11 +28,8 @@ export default function GuestFooter() {
                 { Icon: Globe, label: "Website" },
                 { Icon: AtSign, label: "Email" },
               ].map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  aria-label={label}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-green-200 hover:bg-[#00B074] hover:text-white transition-colors"
-                >
+                <button key={label} aria-label={label}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-green-200 hover:bg-[#00B074] hover:text-white transition-colors">
                   <Icon size={15} />
                 </button>
               ))}
@@ -47,10 +45,7 @@ export default function GuestFooter() {
               {["Beranda", "Kamar & Fasilitas", "Tentang Kami", "Kontak"].map(
                 (item) => (
                   <li key={item}>
-                    <a
-                      href="#"
-                      className="text-sm text-green-200/70 hover:text-[#00B074] transition-colors"
-                    >
+                    <a href="#" className="text-sm text-green-200/70 hover:text-[#00B074] transition-colors">
                       {item}
                     </a>
                   </li>
@@ -87,7 +82,7 @@ export default function GuestFooter() {
             &copy; {year} StayZone Hotel. Seluruh hak cipta dilindungi.
           </p>
           <p className="text-xs text-green-200/30">
-            Dibuat dengan React & Tailwind CSS
+            By : Nur Afifah
           </p>
         </div>
       </div>

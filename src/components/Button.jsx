@@ -1,14 +1,18 @@
-export default function Button({ children, type= "primary" }) {
+export default function Button({ children, type = "primary", className = "", onClick, disabled = false }) {
   const types = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
-    secondary: "bg-gray-600 hover:bg-gray-700 text-white",
-    success: "bg-green-600 hover:bg-green-700 text-white",
-    danger: "bg-red-600 hover:bg-red-700 text-white",
-    warning: "bg-yellow-500 hover:bg-yellow-600 text-white",
+    primary:   "bg-[#113D32] hover:bg-[#0d2e25] text-white shadow-sm",
+    secondary: "bg-white border border-gray-200 text-[#113D32] hover:bg-gray-50",
+    danger:    "bg-red-500 hover:bg-red-600 text-white",
+    warning:   "bg-amber-500 hover:bg-amber-600 text-white",
+    success:   "bg-[#3AB449] hover:bg-[#2ea33e] text-white",
   };
 
   return (
-    <button className={`${types[type]} px-4 py-2 mr-2 rounded-lg`}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${types[type] ?? types.primary} px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+    >
       {children}
     </button>
   );

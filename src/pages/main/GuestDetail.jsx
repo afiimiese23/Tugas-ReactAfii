@@ -1,147 +1,270 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { 
-  FaPhoneAlt, FaEnvelope, FaChevronLeft, 
-  FaCalendarAlt, FaUser, FaInfoCircle 
-} from "react-icons/fa";
-
-// Import StayZone Components
+import { FaEnvelope, FaChevronLeft, FaCalendarAlt, FaUser, FaInfoCircle, FaTag, FaHistory } from "react-icons/fa";
 import Container from "../../components/Container";
 import Card from "../../components/Card";
-import Badge from "../../components/Badge";
 import Button from "../../components/Button";
 import Alert from "../../components/Alert";
 
-// Import Data Mock
-import guestData from "../../data/guestListData.json"; 
+import { supabase } from "../../lib/supabase";
 
+// Helpers 
+function fmtDate(str) {
+  if (!str) return "—";
+  return new Date(str).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+}
+
+function fmtRp(n) {
+  return "Rp " + Number(n).toLocaleString("id-ID");
+}
+
+function StatusPill({ status }) {
+  const map = {
+    Pending:    "bg-amber-100 text-amber-700",
+    Confirmed:  "bg-green-100 text-green-700",
+    "Check-in": "bg-blue-100 text-blue-700",
+    "Check-out":"bg-gray-100 text-gray-600",
+    Cancelled:  "bg-red-100 text-red-600",
+  };
+
+  return (
+    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${map[status] ?? map.Pending}`}>
+      {status}
+    </span>
+  );
+}
+
+function getTier(n) {
+  if (n >= 30) return { label: "Diamond", color: "text-cyan-600 bg-cyan-50 border-cyan-200" };
+  if (n >= 15) return { label: "Gold",    color: "text-yellow-600 bg-yellow-50 border-yellow-200" };
+  if (n >= 5)  return { label: "Silver",  color: "text-gray-500 bg-gray-50 border-gray-200" };
+  return               { label: "Bronze", color: "text-orange-600 bg-orange-50 border-orange-200" };
+}
+
+// Main
 export default function GuestDetail() {
   const { id } = useParams();
+  const [guest, setGuest]       = useState(null);
+  const [loading, setLoading]   = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  // Mencari data tamu berdasarkan ID
-  const guest = guestData.find((g) => g.id === id);
+  useEffect(() => { fetchGuest(); }, [id]);
 
-  if (!guest) {
+  async function fetchGuest() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("user")
+      .select(`
+        id_user, username, email, voucher,
+        bookings ( id_bookings, nama_kamar, start_date, end_date, kode_voucher, catatan, total_harga, status, created_at)`)
+      .eq("id_user", Number(id))
+      .eq("role", "user")
+      .maybeSingle();
+
+    if (error) console.error("fetchGuest:", error);
+    if (!data) { setNotFound(true); setLoading(false); return; }
+    setGuest(data);
+    setLoading(false);
+  }
+
+  // Loading
+  if (loading) {
     return (
-      <Container className="flex flex-col h-screen items-center justify-center bg-[#EEEEEE]">
-        <Alert type="error" message={`Guest with ID ${id} not found!`} />
-        <Link to="/guests" className="mt-6">
-          <Button>Back to Guest List</Button>
-        </Link>
+      <Container className="flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3 text-[#6E6E6E]">
+          <div className="w-8 h-8 border-2 border-[#3AB449] border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm font-medium">Memuat data guest...</p>
+        </div>
       </Container>
     );
   }
 
+  // Not Found
+  if (notFound || !guest) {
+    return (
+      <Container className="flex flex-col items-center justify-center gap-6">
+        <Alert type="error" message={`Member dengan ID ${id} tidak ditemukan.`} />
+        <Link to="/admin/guests"><Button>Kembali ke Guest List</Button></Link>
+      </Container>
+    );
+  }
+
+  // Statistik 
+  const bookings   = guest.bookings || [];
+  const active     = bookings.filter(b => b.status !== "Cancelled");
+  const totalMalam = active.reduce((s, b) =>
+    s + Math.max(0, Math.floor((new Date(b.end_date) - new Date(b.start_date)) / 86400000)), 0);
+  const totalSpend = active.reduce((s, b) => s + Number(b.total_harga || 0), 0);
+  const tier       = getTier(totalMalam);
+  const sorted     = [...bookings].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
   return (
-    <Container className="min-h-screen bg-[#EEEEEE] py-8">
-      
-      {/* HEADER / BREADCRUMB */}
-      <div className="mb-8 flex items-center justify-between px-2">
+    <Container className="py-8">
+      {/* BREADCRUMB */}
+      <div className="mb-8 flex items-center justify-between px-2 flex-wrap gap-3">
         <div>
-          <Link to="/guests" className="flex items-center gap-2 text-[#3AB449] font-bold text-xs mb-2 hover:underline">
-            <FaChevronLeft size={10} /> Back to List
+          <Link to="/admin/guests" className="flex items-center gap-1.5 text-[#3AB449] font-bold text-xs mb-2 hover:underline">
+            <FaChevronLeft size={9} /> Kembali ke Guest List
           </Link>
-          <h1 className="text-2xl font-black text-[#113D32]">Guest Details</h1>
+          <h1 className="text-2xl font-black text-[#113D32]">Guest Detail</h1>
         </div>
-        <div>
-          <Badge type={guest.status === "Refund" || guest.status === "Canceled" ? "danger" : "success"}>
-            {guest.status}
-          </Badge>
-        </div>
+        <span className={`px-3 py-1 rounded-full text-xs font-bold border ${tier.color}`}>
+          {tier.label} Member
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* LEFT COLUMN: PROFILE CARD DENGAN FOTO ASLI */}
-        <div className="lg:col-span-1">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {/* LEFT: Profile */}
+        <div className="lg:col-span-1 space-y-4">
+
+          {/* Profile Card */}
           <Card className="p-8 flex flex-col items-center border-none shadow-sm">
-            {/* FOTO PROFILE DIKEMBALIKAN DISINI */}
             <div className="relative">
-              <img 
-                src={`https://i.pravatar.cc/150?u=${guest.id}`} 
-                alt={guest.name} 
-                className="w-32 h-32 rounded-[24px] object-cover border-4 border-white shadow-md"
-              />
-              <div className="absolute -bottom-2 -right-2 bg-[#3AB449] text-white p-2 rounded-lg shadow-lg">
+              <div className="w-28 h-28 rounded-[24px] bg-gradient-to-br from-[#3AB449] to-[#113D32] flex items-center justify-center shadow-lg">
+                <span className="text-white font-black text-4xl">
+                  {guest.username.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-[#3AB449] text-white p-2 rounded-xl shadow-lg">
                 <FaUser size={12} />
               </div>
             </div>
-            
-            <h2 className="text-xl font-bold mt-6 text-center text-[#113D32]">{guest.name}</h2>
-            <p className="text-[10px] text-[#3AB449] font-black tracking-widest uppercase mt-1 italic">
-              ID: {guest.id}
+
+            <h2 className="text-lg font-bold mt-6 text-center text-[#113D32]">{guest.username}</h2>
+            <p className="text-[10px] text-[#3AB449] font-black tracking-widest uppercase mt-1">
+              ID: {guest.id_user}
             </p>
+            <div className={`mt-3 px-4 py-1.5 rounded-full text-xs font-bold border ${tier.color}`}>
+              {tier.label} · {totalMalam} malam
+            </div>
 
-            <div className="w-full mt-8 space-y-4">
-              <div className="flex items-center gap-4 bg-[#F9F9F9] p-4 rounded-2xl border border-gray-50">
-                <div className="bg-white p-2 rounded-lg text-[#3AB449] shadow-sm">
-                  <FaPhoneAlt size={12} />
-                </div>
-                <span className="text-xs font-bold text-[#113D32]">+62 812-3456-7890</span>
-              </div>
-
-              <div className="flex items-center gap-4 bg-[#F9F9F9] p-4 rounded-2xl border border-gray-50">
+            {/* Kontak */}
+            <div className="w-full mt-6 space-y-3">
+              <div className="flex items-center gap-3 bg-[#F9F9F9] p-3.5 rounded-2xl border border-gray-50">
                 <div className="bg-white p-2 rounded-lg text-[#3AB449] shadow-sm">
                   <FaEnvelope size={12} />
                 </div>
-                <span className="text-xs font-bold text-[#113D32] truncate">
-                  {guest.name.toLowerCase().replace(/\s/g, '')}@stayzone.com
-                </span>
+                <span className="text-xs font-bold text-[#113D32] truncate">{guest.email}</span>
               </div>
+
+              {guest.voucher && (
+                <div className="flex items-center gap-3 bg-[#F9F9F9] p-3.5 rounded-2xl border border-gray-50">
+                  <div className="bg-white p-2 rounded-lg text-[#3AB449] shadow-sm">
+                    <FaTag size={12} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-gray-400 uppercase tracking-wider font-bold">Voucher Aktif</p>
+                    <p className="text-xs font-black text-[#3AB449] font-mono">{guest.voucher}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Stats Card */}
+          <Card className="p-6 border-none shadow-sm">
+            <h4 className="text-xs font-bold text-[#113D32] uppercase tracking-wider mb-4">Statistik Member</h4>
+            <div className="space-y-3">
+              {[
+                { label: "Total Booking", value: bookings.length, unit: "reservasi" },
+                { label: "Total Malam",   value: totalMalam,      unit: "malam" },
+                { label: "Total Spend",   value: fmtRp(totalSpend), unit: "" },
+              ].map((s) => (
+                <div key={s.label} className="flex justify-between items-center py-2.5 border-b border-gray-50 last:border-0">
+                  <span className="text-xs text-[#6E6E6E] font-medium">{s.label}</span>
+                  <span className="text-sm font-black text-[#113D32]">
+                    {s.value} <span className="text-[10px] font-normal text-[#6E6E6E]">{s.unit}</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </Card>
         </div>
 
-        {/* RIGHT COLUMN: BOOKING INFORMATION */}
-        <div className="lg:col-span-2 space-y-8">
-          <Card className="p-8 border-none shadow-sm">
-            <h3 className="text-lg font-bold mb-8 border-b border-gray-50 pb-4 flex items-center gap-2 text-[#113D32]">
-              <FaInfoCircle size={16} className="text-[#3AB449]" /> Stay Information
+        {/* RIGHT: Info + Booking History */}
+        <div className="lg:col-span-2 space-y-4">
+
+          {/* Info Card */}
+          <Card className="p-6 border-none shadow-sm">
+            <h3 className="text-sm font-bold mb-4 flex items-center gap-2 text-[#113D32]">
+              <FaInfoCircle size={14} className="text-[#3AB449]" /> Informasi Member
             </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Room Type</p>
-                <p className="text-sm font-bold text-[#113D32]">{guest.roomType}</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Username</p>
+                <p className="text-sm font-bold text-[#113D32]">{guest.username}</p>
               </div>
-
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Order Date</p>
-                <p className="text-sm font-semibold text-[#113D32]">{guest.orderDate}</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Email</p>
+                <p className="text-sm font-semibold text-[#113D32]">{guest.email}</p>
               </div>
-
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-                  <FaCalendarAlt size={10} /> Check In
-                </p>
-                <p className="text-sm font-bold text-[#113D32]">{guest.checkIn}</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Member ID</p>
+                <p className="text-sm font-bold text-[#113D32]">#{guest.id_user}</p>
               </div>
-
               <div className="space-y-1">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
-                  <FaCalendarAlt size={10} /> Check Out
-                </p>
-                <p className="text-sm font-bold text-[#113D32]">{guest.checkOut}</p>
-              </div>
-
-              <div className="md:col-span-2 bg-[#E6F3EF]/50 p-6 rounded-[24px] border border-[#3AB449]/10 mt-4">
-                <p className="text-[10px] font-bold text-[#3AB449] uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <FaInfoCircle /> Notes / Special Request
-                </p>
-                <p className="text-xs text-[#113D32] leading-relaxed italic font-medium">
-                  "Guest requested a high floor and quiet room. No seafood in breakfast menu."
-                </p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tier</p>
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full border inline-block ${tier.color}`}>
+                  {tier.label}
+                </span>
               </div>
             </div>
+          </Card>
 
-            <div className="flex justify-end gap-4 mt-12 pt-8 border-t border-gray-50">
-               <Button type="secondary" className="px-8 bg-white border-gray-200 text-gray-500 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all">
-                  Cancel Booking
-               </Button>
-               <Button className="px-10 shadow-lg shadow-green-900/10">
-                  Edit Booking
-               </Button>
-            </div>
+          {/* Booking History */}
+          <Card className="p-6 border-none shadow-sm">
+            <h3 className="text-sm font-bold mb-5 flex items-center gap-2 text-[#113D32]">
+              <FaHistory size={14} className="text-[#3AB449]" />
+              Riwayat Booking
+              <span className="ml-auto text-[10px] font-normal text-[#6E6E6E] bg-gray-100 px-2 py-0.5 rounded-full">
+                {bookings.length} total
+              </span>
+            </h3>
+
+            {sorted.length === 0 ? (
+              <div className="py-12 text-center">
+                <FaCalendarAlt size={28} className="mx-auto text-gray-200 mb-3" />
+                <p className="text-xs text-gray-400 italic">Belum ada riwayat booking.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {sorted.map((bk) => {
+                  const nights = Math.max(0, Math.floor(
+                    (new Date(bk.end_date) - new Date(bk.start_date)) / 86400000
+                  ));
+                  return (
+                    <div key={bk.id_bookings}
+                      className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-[#F9F9F9] rounded-2xl border border-gray-100">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-bold text-[#113D32] text-sm">{bk.nama_kamar}</p>
+                          <StatusPill status={bk.status} />
+                          {bk.kode_voucher && (
+                            <span className="text-[10px] font-bold text-[#3AB449] bg-[#3AB449]/10 px-2 py-0.5 rounded-full font-mono">
+                              {bk.kode_voucher}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-[#6E6E6E] mt-1 flex items-center gap-1">
+                          <FaCalendarAlt size={9} />
+                          {fmtDate(bk.start_date)} → {fmtDate(bk.end_date)}
+                          <span className="text-gray-400 ml-1">({nights} malam)</span>
+                        </p>
+                        {bk.catatan && (
+                          <p className="text-[10px] text-gray-400 italic mt-1 truncate">"{bk.catatan}"</p>
+                        )}
+                        <p className="text-[10px] text-gray-300 font-mono mt-0.5 truncate">{bk.id_bookings}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-black text-[#3AB449] text-sm">{fmtRp(bk.total_harga)}</p>
+                        <p className="text-[10px] text-gray-400">{fmtDate(bk.created_at)}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </Card>
         </div>
       </div>

@@ -1,134 +1,152 @@
-import React from 'react';
-import { FaHeart, FaEnvelope, FaBell, FaCommentDots, FaCalendarAlt } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaUser, FaLock, FaBell, FaCreditCard, FaFileContract } from "react-icons/fa";
+import { getSession, setSession } from "../../lib/auth";
+import { supabase } from "../../lib/supabase";
+import Container from "../../components/Container";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
 
-const SettingsPage = () => {
+const MENUS = [
+  { key: "personal",  label: "Personal Settings",      icon: <FaUser /> },
+  { key: "password",  label: "Ganti Password",          icon: <FaLock /> },
+  { key: "notif",     label: "Notifikasi",              icon: <FaBell /> },
+  { key: "payment",   label: "Metode Pembayaran",       icon: <FaCreditCard /> },
+  { key: "terms",     label: "Syarat & Ketentuan",      icon: <FaFileContract /> },
+];
+
+export default function SettingsPage() {
+  const session                   = getSession();
+  const [activeMenu, setActiveMenu] = useState("personal");
+  const [form, setForm]           = useState({ username: session?.nama || "", email: session?.email || "" });
+  const [saving, setSaving]       = useState(false);
+  const [saved, setSaved]         = useState(false);
+
+  function handleChange(e) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSave(e) {
+    e.preventDefault();
+    if (!session?.id) return;
+    setSaving(true);
+    const { error } = await supabase
+      .from("user")
+      .update({ username: form.username })
+      .eq("id_user", Number(session.id));
+
+    if (!error) {
+      setSession({ ...session, nama: form.username });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    }
+    setSaving(false);
+  }
+
   return (
-    <div className="min-h-screen bg-[#EEEEEE] font-['Poppins'] text-[#113D32] p-8">
-      {/* TOP NAVIGATION BAR */}
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-2xl font-bold">Settings</h1>
-        
-        <div className="flex items-center space-x-6">
-          {/* SEARCH BAR */}
-          <div className="relative">
-            <input 
-              type="text" 
-              placeholder="Search" 
-              className="bg-white px-5 py-2.5 rounded-xl w-64 shadow-sm focus:outline-none text-sm border border-gray-100"
-            />
-            <svg className="w-4 h-4 absolute right-4 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-          
-          {/* TOP ICONS */}
-          <div className="flex space-x-5 text-[#113D32] text-xl">
-            <FaHeart className="cursor-pointer hover:text-[#3AB449]" />
-            <FaEnvelope className="cursor-pointer hover:text-[#3AB449]" />
-            <FaBell className="cursor-pointer hover:text-[#3AB449]" />
-            <FaCommentDots className="cursor-pointer hover:text-[#3AB449]" />
-          </div>
-          
-          {/* PROFILE IMAGE */}
-          <img 
-            src="https://i.pravatar.cc/150?u=nandhini" 
-            alt="Profile" 
-            className="w-10 h-10 rounded-xl border-2 border-white shadow-sm"
-          />
-        </div>
+    <Container>
+
+      {/* HEADER */}
+      <div className="mb-8 px-2">
+        <h1 className="text-2xl font-bold text-[#113D32]">Pengaturan</h1>
+        <p className="text-xs text-[#6E6E6E] mt-1 font-medium">Kelola informasi akun dan preferensi Anda.</p>
       </div>
 
-      <div className="flex gap-8">
-        {/* LEFT SIDEBAR CARD */}
-        <div className="w-1/4 bg-white rounded-[32px] p-8 shadow-sm flex flex-col items-center border border-gray-50 h-fit">
-          <img 
-            src="https://i.pravatar.cc/150?u=nandhini" 
-            alt="Avatar" 
-            className="w-24 h-24 rounded-[24px] mb-4 border-4 border-[#EEEEEE]"
-          />
-          <h2 className="text-lg font-bold">Nandhini</h2>
-          <p className="text-xs text-gray-400 font-medium mb-8">Owner</p>
-          
-          <div className="w-full space-y-2">
-            <button className="w-full text-left px-6 py-3 bg-[#113D32] text-white rounded-xl text-xs font-bold shadow-md shadow-green-900/20">
-              Personal Settings
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[#113D32] hover:bg-gray-50 rounded-xl text-xs font-bold transition-all">
-              Payment Method
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[#113D32] hover:bg-gray-50 rounded-xl text-xs font-bold transition-all">
-              Notification Settings
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[#113D32] hover:bg-gray-50 rounded-xl text-xs font-bold transition-all">
-              Change Password
-            </button>
-            <button className="w-full text-left px-6 py-3 text-[#113D32] hover:bg-gray-50 rounded-xl text-xs font-bold transition-all">
-              Terms & Condition
-            </button>
-          </div>
-        </div>
+      <div className="flex gap-6 flex-col lg:flex-row">
 
-        {/* RIGHT FORM CARD */}
-        <div className="flex-1 bg-white rounded-[32px] p-10 shadow-sm border border-gray-50">
-          <h2 className="text-lg font-bold mb-8">Personal Settings</h2>
-          
-          <form className="grid grid-cols-2 gap-x-8 gap-y-6">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">First Name</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Last Name</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Email</label>
-              <input type="email" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Mobile No</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Designation</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Date of Birth</label>
-              <div className="relative">
-                <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-                <FaCalendarAlt className="absolute right-4 top-3.5 text-[#113D32]" />
+        {/* SIDEBAR */}
+        <div className="w-full lg:w-64 shrink-0">
+          <Card className="p-6 border-none shadow-sm">
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-20 h-20 rounded-[20px] bg-gradient-to-br from-[#3AB449] to-[#113D32] flex items-center justify-center shadow-lg mb-3">
+                <span className="text-white font-black text-3xl">
+                  {(session?.nama || "A").charAt(0).toUpperCase()}
+                </span>
               </div>
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Address</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">City</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">State</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-[#113D32]">Country</label>
-              <input type="text" className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm" />
+              <h2 className="font-bold text-[#113D32] text-sm">{session?.nama || "Admin"}</h2>
+              <p className="text-[10px] text-gray-400 font-medium">{session?.email || ""}</p>
+              <span className="mt-2 text-[10px] bg-[#3AB449]/10 text-[#3AB449] font-bold px-3 py-1 rounded-full">
+                {session?.role || "admin"}
+              </span>
             </div>
 
-            <div className="col-span-2 flex justify-end mt-4">
-              <button className="bg-[#113D32] text-white px-10 py-3 rounded-xl text-sm font-bold shadow-lg shadow-green-900/20 active:scale-95 transition-transform">
-                Update
-              </button>
-            </div>
-          </form>
+            <nav className="space-y-1">
+              {MENUS.map((m) => (
+                <button
+                  key={m.key}
+                  onClick={() => setActiveMenu(m.key)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-left ${
+                    activeMenu === m.key
+                      ? "bg-[#113D32] text-white shadow-md shadow-green-900/20"
+                      : "text-[#113D32] hover:bg-gray-50"
+                  }`}
+                >
+                  <span className={activeMenu === m.key ? "text-[#3AB449]" : "text-gray-400"}>{m.icon}</span>
+                  {m.label}
+                </button>
+              ))}
+            </nav>
+          </Card>
+        </div>
+
+        {/* MAIN CONTENT */}
+        <div className="flex-1">
+          {activeMenu === "personal" && (
+            <Card className="p-8 border-none shadow-sm">
+              <h2 className="text-lg font-bold text-[#113D32] mb-6">Personal Settings</h2>
+
+              {saved && (
+                <div className="mb-4 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-4 py-3 rounded-xl">
+                  ✓ Perubahan berhasil disimpan.
+                </div>
+              )}
+
+              <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#113D32]">Username</label>
+                  <input name="username" value={form.username} onChange={handleChange}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-1 focus:ring-[#3AB449] outline-none text-sm"/>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#113D32]">Email</label>
+                  <input name="email" value={form.email} disabled
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none text-sm bg-gray-50 text-gray-400 cursor-not-allowed"/>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#113D32]">Role</label>
+                  <input value={session?.role || "admin"} disabled
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none text-sm bg-gray-50 text-gray-400 cursor-not-allowed capitalize"/>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#113D32]">Member ID</label>
+                  <input value={session?.id || "—"} disabled
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none text-sm bg-gray-50 text-gray-400 cursor-not-allowed"/>
+                </div>
+
+                <div className="md:col-span-2 flex justify-end mt-2">
+                  <Button type="primary" className="px-10 py-3 shadow-lg shadow-green-900/20" disabled={saving}>
+                    {saving ? "Menyimpan..." : "Simpan Perubahan"}
+                  </Button>
+                </div>
+              </form>
+            </Card>
+          )}
+
+          {activeMenu !== "personal" && (
+            <Card className="p-8 border-none shadow-sm flex flex-col items-center justify-center py-24">
+              <div className="text-5xl mb-4 text-gray-200">
+                {MENUS.find((m) => m.key === activeMenu)?.icon}
+              </div>
+              <p className="text-sm font-bold text-[#113D32]">
+                {MENUS.find((m) => m.key === activeMenu)?.label}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">Fitur ini akan segera hadir.</p>
+            </Card>
+          )}
         </div>
       </div>
-    </div>
+    </Container>
   );
-};
-
-export default SettingsPage;
+}

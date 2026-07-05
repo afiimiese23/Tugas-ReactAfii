@@ -1,17 +1,19 @@
-import Card from "../components/Card";
-
 export default function Table({ headers, children }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border border-gray-200">
-        <thead className="bg-gray-100">
+      <table className="w-full text-sm">
+        <thead className="bg-gray-50 border-b border-gray-100">
           <tr>
-            {headers.map((header, index) => (
-              <th key={index} className="border px-4 py-3 text-left"> {header} </th> ))}
+            {headers.map((header, i) => (
+              <th key={i} className="px-5 py-3.5 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
-
-        <tbody>{children}</tbody>
+        <tbody className="divide-y divide-gray-50">
+          {children}
+        </tbody>
       </table>
     </div>
   );

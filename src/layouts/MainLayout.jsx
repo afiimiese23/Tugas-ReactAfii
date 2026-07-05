@@ -1,18 +1,17 @@
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
+import Header  from "../components/Header";
 import { Outlet } from "react-router-dom";
 
-export default function MainLayout(){
-    return(
-        <div id="app-container" className="bg-gray-100 min-h-screen flex">
-            <div id="layout-wrapper" className="flex flex-row flex-1">
-                <Sidebar/>
-                <div id="main-content" className="flex-1 p-4">
-                    <Header />
-
-                    <Outlet/>
-                </div>
-            </div>
-        </div>
-    )
+export default function MainLayout() {
+  return (
+    <div className="min-h-screen flex bg-[#F4F6F8]">
+      <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+        <Header />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 }

@@ -20,8 +20,8 @@ export default function GuestNavbar() {
 
           {/* Logo */}
           <a href="#beranda" className="flex items-center gap-2 select-none">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00B074]">
-              <span className="text-sm font-bold text-white">SZ</span>
+            <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-[#3AB449] to-[#113D32] flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-sm">SZ</span>
             </div>
             <span className="text-xl font-bold tracking-tight">
               <span className="text-[#00B074]">Stay</span>
@@ -32,11 +32,7 @@ export default function GuestNavbar() {
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-colors hover:text-[#00B074] hover:bg-green-50"
-              >
+              <a key={link.label} href={link.href} className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-colors hover:text-[#00B074] hover:bg-green-50">
                 {link.label}
               </a>
             ))}
@@ -44,22 +40,13 @@ export default function GuestNavbar() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button
-              variant="default"
-              size="default"
-              className="bg-[#00B074] hover:bg-[#00B074]/90 text-white px-5"
-              onClick={() => navigate("/login")}
-            >
+            <Button variant="default" size="default" className="bg-[#00B074] hover:bg-[#00B074]/90 text-white px-5" onClick={() => navigate("/login")} >
               Masuk / Daftar
             </Button>
           </div>
 
           {/* Mobile Hamburger */}
-          <button
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-green-50"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
+          <button className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-green-50" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
@@ -68,22 +55,14 @@ export default function GuestNavbar() {
         {menuOpen && (
           <div className="md:hidden pb-4 border-t border-green-100 mt-1 pt-3 space-y-1">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
+              <a key={link.label} href={link.href}
                 className="block px-4 py-2.5 text-sm font-medium text-gray-600 rounded-lg hover:text-[#00B074] hover:bg-green-50"
-                onClick={() => setMenuOpen(false)}
-              >
+                onClick={() => setMenuOpen(false)} >
                 {link.label}
               </a>
             ))}
             <div className="pt-2 px-1">
-              <Button
-                variant="default"
-                size="default"
-                className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
-                onClick={() => { navigate("/login"); setMenuOpen(false); }}
-              >
+              <Button variant="default" size="default" className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white" onClick={() => { navigate("/login"); setMenuOpen(false); }} >
                 Masuk / Daftar
               </Button>
             </div>

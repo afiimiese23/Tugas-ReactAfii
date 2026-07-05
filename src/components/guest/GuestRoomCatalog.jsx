@@ -5,18 +5,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GuestRoomCard from "./GuestRoomCard";
 import GuestRoomDialog from "./GuestRoomDialog";
 
-// ─── Initial Data ──────────────────────────────────────────────────────────────
+// Initial Data
 const initialRooms = [
-  {
-    id: 1,
-    name: "Standard Room",
-    category: "Standard",
-    bedType: "Twin Bed",
-    maxGuest: 2,
-    price: "Rp 450.000",
-    priceNum: 450000,
-    stok: 5,
-    jumlah_klik: 0,
+  { id: 1, name: "Standard Room", category: "Standard", bedType: "Twin Bed",
+    maxGuest: 2, price: "Rp 450.000", priceNum: 450000, stok: 5, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&auto=format&fit=crop&q=80",
     description:
@@ -27,16 +19,9 @@ const initialRooms = [
       { label: "Non-Smoking", variant: "outline" },
     ],
   },
-  {
-    id: 2,
-    name: "Deluxe Room",
-    category: "Deluxe",
-    bedType: "Queen Bed",
-    maxGuest: 2,
-    price: "Rp 750.000",
-    priceNum: 750000,
-    stok: 3,
-    jumlah_klik: 0,
+
+  { id: 2, name: "Deluxe Room", category: "Deluxe", bedType: "Queen Bed",
+    maxGuest: 2, price: "Rp 750.000", priceNum: 750000, stok: 3, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=80",
     description:
@@ -48,16 +33,9 @@ const initialRooms = [
       { label: "City View", variant: "outline" },
     ],
   },
-  {
-    id: 3,
-    name: "Executive Suite",
-    category: "Suite",
-    bedType: "King Bed",
-    maxGuest: 3,
-    price: "Rp 1.200.000",
-    priceNum: 1200000,
-    stok: 2,
-    jumlah_klik: 0,
+
+  { id: 3, name: "Executive Suite", category: "Suite", bedType: "King Bed",
+    maxGuest: 3, price: "Rp 1.200.000", priceNum: 1200000, stok: 2, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&auto=format&fit=crop&q=80",
     description:
@@ -69,16 +47,9 @@ const initialRooms = [
       { label: "Bathtub", variant: "outline" },
     ],
   },
-  {
-    id: 4,
-    name: "Junior Suite",
-    category: "Suite",
-    bedType: "King Bed",
-    maxGuest: 2,
-    price: "Rp 950.000",
-    priceNum: 950000,
-    stok: 0,
-    jumlah_klik: 0,
+
+  { id: 4, name: "Junior Suite", category: "Suite", bedType: "King Bed",
+    maxGuest: 2, price: "Rp 950.000", priceNum: 950000, stok: 0, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&auto=format&fit=crop&q=80",
     description:
@@ -90,16 +61,9 @@ const initialRooms = [
       { label: "Lounge Access", variant: "outline" },
     ],
   },
-  {
-    id: 5,
-    name: "Family Room",
-    category: "Standard",
-    bedType: "2 Queen Beds",
-    maxGuest: 4,
-    price: "Rp 1.100.000",
-    priceNum: 1100000,
-    stok: 4,
-    jumlah_klik: 0,
+
+  { id: 5, name: "Family Room", category: "Standard", bedType: "2 Queen Beds",
+    maxGuest: 4, price: "Rp 1.100.000", priceNum: 1100000, stok: 4, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1586105251261-72a756497a11?w=600&auto=format&fit=crop&q=80",
     description:
@@ -111,16 +75,9 @@ const initialRooms = [
       { label: "Kids Friendly", variant: "outline" },
     ],
   },
-  {
-    id: 6,
-    name: "Presidential Suite",
-    category: "Suite",
-    bedType: "King Bed + Living Room",
-    maxGuest: 4,
-    price: "Rp 3.500.000",
-    priceNum: 3500000,
-    stok: 1,
-    jumlah_klik: 0,
+
+  { id: 6, name: "Presidential Suite", category: "Suite", bedType: "King Bed + Living Room",
+    maxGuest: 4, price: "Rp 3.500.000", priceNum: 3500000, stok: 1, jumlah_klik: 0,
     image:
       "https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=600&auto=format&fit=crop&q=80",
     description:
@@ -136,25 +93,25 @@ const initialRooms = [
 
 const CATEGORIES = ["Semua", "Standard", "Deluxe", "Suite"];
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+// Main Component 
 export default function GuestRoomCatalog() {
   const [rooms, setRooms] = useState(initialRooms);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [selectedRoom, setSelectedRoom] = useState(null);
 
-  // Handle klik "Lihat Detail" — tambah jumlah_klik & buka dialog
+  // Handle klik "Lihat Detail"
   function handleViewDetail(room) {
     setRooms((prev) =>
       prev.map((r) =>
         r.id === room.id ? { ...r, jumlah_klik: r.jumlah_klik + 1 } : r
       )
     );
-    // Ambil data room yang sudah ter-update (+1 klik) untuk ditampilkan di dialog
+    // Ambil data room yang sudah ter-update
     setSelectedRoom({ ...room, jumlah_klik: room.jumlah_klik + 1 });
   }
 
-  // Filter: search + category (case-insensitive)
+  // Filter: search + category 
   const filteredRooms = useMemo(() => {
     return rooms.filter((room) => {
       const matchSearch =
@@ -178,7 +135,7 @@ export default function GuestRoomCatalog() {
   const totalKlik = rooms.reduce((sum, r) => sum + r.jumlah_klik, 0);
 
   return (
-    <section id="kamar" className="bg-green-50/50 py-16 lg:py-20">
+    <section id="kamar" className="bg-green-50/50 py-16 lg:py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* ── Section Heading ── */}
@@ -195,35 +152,20 @@ export default function GuestRoomCatalog() {
           </p>
         </div>
 
-        {/* ── Search & Filter Hub ── */}
+        {/* ── Search & Filter ── */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           {/* Search Input */}
           <div className="relative w-full sm:max-w-xs">
-            <Search
-              size={15}
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            />
-            <Input
-              type="text"
-              placeholder="Cari nama atau tipe kamar..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-8 border-green-200 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/20"
-            />
+            <Search size={15} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"/>
+            <Input type="text" placeholder="Cari nama atau tipe kamar..." value={search} onChange={(e) => setSearch(e.target.value)}
+              className="pl-8 border-green-200 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/20"/>
           </div>
 
           {/* Category Tabs Filter */}
-          <Tabs
-            value={activeCategory}
-            onValueChange={setActiveCategory}
-          >
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} >
             <TabsList className="bg-green-100/80 h-8">
               {CATEGORIES.map((cat) => (
-                <TabsTrigger
-                  key={cat}
-                  value={cat}
-                  className="data-active:bg-[#00B074] data-active:text-white text-xs px-3"
-                >
+                <TabsTrigger key={cat} value={cat} className="data-active:bg-[#00B074] data-active:text-white text-xs px-3" >
                   {cat}
                 </TabsTrigger>
               ))}
@@ -235,21 +177,15 @@ export default function GuestRoomCatalog() {
         {filteredRooms.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.map((room) => (
-              <GuestRoomCard
-                key={room.id}
-                room={room}
-                onViewDetail={handleViewDetail}
-              />
+              <GuestRoomCard key={room.id} room={room} onViewDetail={handleViewDetail} />
             ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
             <Search size={40} className="mb-3 opacity-30" />
             <p className="text-sm">Tidak ada kamar yang sesuai dengan pencarian Anda.</p>
-            <button
-              onClick={() => { setSearch(""); setActiveCategory("Semua"); }}
-              className="mt-3 text-xs text-[#00B074] underline underline-offset-2 hover:opacity-80"
-            >
+            <button onClick={() => { setSearch(""); setActiveCategory("Semua"); }}
+              className="mt-3 text-xs text-[#00B074] underline underline-offset-2 hover:opacity-80">
               Reset filter
             </button>
           </div>
@@ -283,12 +219,7 @@ export default function GuestRoomCatalog() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {topRooms.map((room, index) => (
-              <TrendCard
-                key={room.id}
-                room={room}
-                rank={index + 1}
-                onViewDetail={handleViewDetail}
-              />
+              <TrendCard key={room.id} room={room} rank={index + 1} onViewDetail={handleViewDetail} />
             ))}
           </div>
 
@@ -301,39 +232,27 @@ export default function GuestRoomCatalog() {
       </div>
 
       {/* ── Dialog Detail Kamar ── */}
-      <GuestRoomDialog
-        room={selectedRoom}
-        open={!!selectedRoom}
-        onClose={() => setSelectedRoom(null)}
-      />
+      <GuestRoomDialog room={selectedRoom} open={!!selectedRoom} onClose={() => setSelectedRoom(null)} />
     </section>
   );
 }
 
-// ─── Trend Card Sub-component ──────────────────────────────────────────────────
+// Trend Card Sub-component
 function TrendCard({ room, rank, onViewDetail }) {
   const rankColors = {
-    1: "bg-amber-400 text-white",
-    2: "bg-gray-400 text-white",
-    3: "bg-orange-400 text-white",
+    1: "bg-amber-400 text-white", 2: "bg-gray-400 text-white", 3: "bg-orange-400 text-white",
   };
 
   return (
     <div className="flex items-center gap-3 rounded-xl border border-green-100 bg-white p-3 shadow-sm hover:shadow-md transition-shadow">
       {/* Rank badge */}
-      <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${rankColors[rank]}`}
-      >
+      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${rankColors[rank]}`} >
         #{rank}
       </div>
 
       {/* Thumbnail */}
       <div className="h-12 w-16 shrink-0 overflow-hidden rounded-lg">
-        <img
-          src={room.image}
-          alt={room.name}
-          className="h-full w-full object-cover"
-        />
+        <img src={room.image} alt={room.name} className="h-full w-full object-cover" />
       </div>
 
       {/* Info */}

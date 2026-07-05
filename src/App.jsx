@@ -21,7 +21,6 @@ const Guests       = React.lazy(() => import("./pages/main/Guests"));
 const Rooms        = React.lazy(() => import("./pages/main/Rooms"));
 const Employers    = React.lazy(() => import("./pages/main/Employers"));
 const Settings     = React.lazy(() => import("./pages/main/Settings"));
-const RoomDetail   = React.lazy(() => import("./pages/main/RoomDetail"));
 const GuestDetail  = React.lazy(() => import("./pages/main/GuestDetail"));
 const Components   = React.lazy(() => import("./pages/main/Components"));
 const ComponentsP11= React.lazy(() => import("./pages/main/ComponentsP11"));
@@ -35,9 +34,7 @@ export default function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
 
-        {/* ═══════════════════════════════════════════
-            PUBLIC — Guest (no auth required)
-        ═══════════════════════════════════════════ */}
+        {/* PUBLIC — Guest (no auth required) */}
         <Route path="/" element={<LandingPage />} />
 
         {/* Auth pages */}
@@ -47,9 +44,7 @@ export default function App() {
           <Route path="/forgot"   element={<Forgot />} />
         </Route>
 
-        {/* ═══════════════════════════════════════════
-            MEMBER — role "user" only
-        ═══════════════════════════════════════════ */}
+        {/* MEMBER — role "user" only */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
           <Route element={<MemberLayout />}>
             <Route path="/member/dashboard" element={<MemberDashboard />} />
@@ -58,9 +53,7 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* ═══════════════════════════════════════════
-            ADMIN — role "admin" only
-        ═══════════════════════════════════════════ */}
+        {/* ADMIN — role "admin" only */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route element={<MainLayout />} path="/admin">
             <Route path="dashboard"      element={<Dashboard />} />
@@ -69,7 +62,6 @@ export default function App() {
             <Route path="guests/:id"     element={<GuestDetail />} />
             <Route path="employers"      element={<Employers />} />
             <Route path="rooms"          element={<Rooms />} />
-            <Route path="rooms/:id"      element={<RoomDetail />} />
             <Route path="settings"       element={<Settings />} />
             <Route path="components"     element={<Components />} />
             <Route path="components-p11" element={<ComponentsP11 />} />
@@ -77,9 +69,7 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* ═══════════════════════════════════════════
-            ERROR ROUTES
-        ═══════════════════════════════════════════ */}
+        {/* ERROR ROUTES */}
         <Route path="/error-400" element={<ErrorPage code="400" title="Bad Request"    description="Permintaan tidak dapat diproses oleh server."  image="https://illustrations.popsy.co/gray/falling.svg" />} />
         <Route path="/error-401" element={<ErrorPage code="401" title="Unauthorized"   description="Anda harus login terlebih dahulu."              image="https://illustrations.popsy.co/gray/shaking-hands.svg" />} />
         <Route path="/error-403" element={<ErrorPage code="403" title="Forbidden"      description="Anda tidak memiliki akses ke halaman ini."      image="https://illustrations.popsy.co/gray/stop.svg" />} />

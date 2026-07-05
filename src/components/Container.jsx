@@ -1,9 +1,6 @@
-export default function Container({
-  children,
-  className = ""
-}) {
+export default function Container({ children, className = "" }) {
   return (
-    <div className={`container mx-auto py-8 px-4 ${className}`}>
+    <div className={`max-w-7xl mx-auto px-6 py-8 ${className}`}>
       {children}
     </div>
   );

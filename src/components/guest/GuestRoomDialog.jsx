@@ -1,15 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Users, BedDouble, CheckCircle2, Eye, Layers, LogIn, UserPlus } from "lucide-react";
-import { isLoggedIn, isMember } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 
 /**
  * @param {{
@@ -23,8 +17,8 @@ export default function GuestRoomDialog({ room, open, onClose }) {
 
   if (!room) return null;
 
-  const loggedIn = isLoggedIn();
-  const memberLoggedIn = isMember();
+  const session        = getSession();
+  const memberLoggedIn = session?.role === "user";
 
   function handleBookNow() {
     onClose();
@@ -39,7 +33,6 @@ export default function GuestRoomDialog({ room, open, onClose }) {
 
   function handleRegisterFirst() {
     onClose();
-    // Scroll ke form member di landing page
     const el = document.getElementById("member");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
@@ -49,14 +42,12 @@ export default function GuestRoomDialog({ room, open, onClose }) {
   return (
     <Dialog open={open} onOpenChange={(val) => { if (!val) onClose(); }}>
       <DialogContent className="max-w-lg w-full max-h-[90vh] overflow-y-auto p-0">
+
         {/* Header Image */}
         <div className="relative h-52 w-full overflow-hidden rounded-t-xl">
-          <img
-            src={room.image}
-            alt={`Foto ${room.name}`}
-            className="h-full w-full object-cover"
-          />
+          <img src={room.image} alt={`Foto ${room.name}`} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a3c2e]/70 to-transparent" />
+          
           {/* Price on image */}
           <div className="absolute bottom-4 left-4">
             <p className="text-white text-xl font-bold">
@@ -64,6 +55,7 @@ export default function GuestRoomDialog({ room, open, onClose }) {
               <span className="text-sm font-normal text-white/80"> / malam</span>
             </p>
           </div>
+          
           {/* View count badge */}
           <div className="absolute top-3 right-10 flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-xs text-white backdrop-blur-sm">
             <Eye size={11} />
@@ -84,15 +76,12 @@ export default function GuestRoomDialog({ room, open, onClose }) {
               </span>
               <span className="flex items-center gap-1">
                 <Layers size={13} />
-                <span
-                  className={
-                    room.stok === 0
+                <span className={ room.stok === 0
                       ? "text-red-500 font-semibold"
                       : room.stok <= 2
                       ? "text-amber-600 font-semibold"
                       : "text-[#00B074] font-semibold"
-                  }
-                >
+                  } >
                   {room.stok === 0
                     ? "Kamar Penuh"
                     : `${room.stok} kamar tersedia`}
@@ -129,7 +118,7 @@ export default function GuestRoomDialog({ room, open, onClose }) {
             </div>
           </div>
 
-          {/* ── Action Area ── */}
+          {/* Action Area */}
           <div className="flex flex-col gap-2 pt-1">
             {room.stok === 0 ? (
               <Button disabled className="w-full">
@@ -137,30 +126,16 @@ export default function GuestRoomDialog({ room, open, onClose }) {
               </Button>
             ) : memberLoggedIn ? (
               /* Sudah login sebagai member */
-              <Button
-                onClick={handleBookNow}
-                className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
-              >
-                <LogIn size={15} className="mr-2" />
-                Pesan Sekarang
+              <Button onClick={handleBookNow} className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white" >
+                <LogIn size={15} className="mr-2" /> Pesan Sekarang
               </Button>
             ) : (
-              /* Belum login — tampilkan 2 opsi */
+              
               <>
-                <Button
-                  onClick={handleBookNow}
-                  className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white"
-                >
-                  <LogIn size={15} className="mr-2" />
-                  Masuk untuk Memesan
-                </Button>
-                <Button
-                  onClick={handleRegisterFirst}
-                  variant="outline"
-                  className="w-full border-[#00B074] text-[#00B074] hover:bg-green-50"
-                >
-                  <UserPlus size={15} className="mr-2" />
-                  Daftar Member Gratis
+
+                <Button onClick={handleRegisterFirst} variant="outline" className="w-full border-[#00B074] text-[#00B074] hover:bg-green-50">
+                
+                  <UserPlus size={15} className="mr-2" /> Daftar Member Gratis
                 </Button>
                 <p className="text-center text-xs text-gray-400 mt-1">
                   Daftar member untuk mendapatkan voucher diskon 20% untuk pemesanan pertama Anda.
@@ -168,11 +143,7 @@ export default function GuestRoomDialog({ room, open, onClose }) {
               </>
             )}
 
-            <Button
-              variant="outline"
-              className="w-full border-gray-200 text-gray-500 hover:bg-gray-50"
-              onClick={onClose}
-            >
+            <Button variant="outline" className="w-full border-gray-200 text-gray-500 hover:bg-gray-50" onClick={onClose} >
               Tutup
             </Button>
           </div>

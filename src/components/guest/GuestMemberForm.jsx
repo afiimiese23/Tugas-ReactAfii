@@ -6,37 +6,17 @@ import { Gift, CheckCircle2, User, Mail, Phone, Loader2, ArrowRight } from "luci
 import { registerMember } from "@/lib/auth";
 
 const LOYALTY_TIERS = [
-  {
-    tier: "Bronze",
-    nights: "1–3 Malam",
-    benefit: "Free Welcome Drink",
-    icon: "🥉",
-    color: "border-amber-700/30 bg-amber-50",
-    badge: "bg-amber-700/10 text-amber-800",
+  { tier: "Bronze", nights: "1–3 Malam", benefit: "Free Welcome Drink",
+    icon: "🥉", color: "border-amber-700/30 bg-amber-50", badge: "bg-amber-700/10 text-amber-800",
   },
-  {
-    tier: "Silver",
-    nights: "4–10 Malam",
-    benefit: "Diskon 10% & Late Check-out",
-    icon: "🥈",
-    color: "border-gray-300 bg-gray-50",
-    badge: "bg-gray-200 text-gray-700",
+  { tier: "Silver", nights: "4–10 Malam", benefit: "Diskon 10% & Late Check-out",
+    icon: "🥈", color: "border-gray-300 bg-gray-50", badge: "bg-gray-200 text-gray-700",
   },
-  {
-    tier: "Gold",
-    nights: "11–20 Malam",
-    benefit: "Free Breakfast & Room Upgrade",
-    icon: "🥇",
-    color: "border-yellow-400/50 bg-yellow-50",
-    badge: "bg-yellow-100 text-yellow-800",
+  { tier: "Gold", nights: "11–20 Malam", benefit: "Free Breakfast & Room Upgrade",
+    icon: "🥇", color: "border-yellow-400/50 bg-yellow-50", badge: "bg-yellow-100 text-yellow-800",
   },
-  {
-    tier: "Platinum",
-    nights: ">20 Malam",
-    benefit: "Executive Lounge & Antar Jemput Bandara",
-    icon: "💎",
-    color: "border-[#00B074]/40 bg-green-50",
-    badge: "bg-[#00B074]/10 text-[#1a3c2e]",
+  { tier: "Platinum", nights: ">20 Malam", benefit: "Executive Lounge & Antar Jemput Bandara",
+    icon: "💎", color: "border-[#00B074]/40 bg-green-50", badge: "bg-[#00B074]/10 text-[#1a3c2e]",
   },
 ];
 
@@ -45,9 +25,9 @@ export default function GuestMemberForm() {
   const [form, setForm] = useState({ nama: "", email: "", whatsapp: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [successData, setSuccessData] = useState(null); // { nama, email, voucher, password }
+  const [successData, setSuccessData] = useState(null);
 
-  // ── Validation ─────────────────────────────────────────────────────────────
+  // Validation
   function validate() {
     const e = {};
     if (!form.nama.trim()) e.nama = "Nama lengkap wajib diisi.";
@@ -57,23 +37,20 @@ export default function GuestMemberForm() {
     if (!form.whatsapp.trim()) e.whatsapp = "Nomor WhatsApp wajib diisi.";
     else if (!/^[0-9+\-\s]{8,15}$/.test(form.whatsapp))
       e.whatsapp = "Format nomor tidak valid.";
-    return e;
-  }
+    return e; }
 
   function handleChange(e) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
-  }
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined })); }
 
-  // ── Submit = Register Akun Member ──────────────────────────────────────────
+  // Submit = Register Akun Member
   async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
       setErrors(errs);
-      return;
-    }
+      return; }
 
     setLoading(true);
 
@@ -86,8 +63,7 @@ export default function GuestMemberForm() {
     if (!result.success) {
       setErrors({ email: result.error });
       setLoading(false);
-      return;
-    }
+      return; }
 
     setSuccessData(result.member);
     setForm({ nama: "", email: "", whatsapp: "" });
@@ -103,7 +79,7 @@ export default function GuestMemberForm() {
   }
 
   return (
-    <section id="member" className="bg-white py-16 lg:py-20">
+    <section id="member" className="bg-white py-16 lg:py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* ── Loyalty Tiers ── */}
@@ -121,10 +97,7 @@ export default function GuestMemberForm() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
           {LOYALTY_TIERS.map((t) => (
-            <div
-              key={t.tier}
-              className={`rounded-xl border p-4 flex flex-col gap-2 ${t.color} transition-transform hover:-translate-y-0.5`}
-            >
+            <div key={t.tier} className={`rounded-xl border p-4 flex flex-col gap-2 ${t.color} transition-transform hover:-translate-y-0.5`}>
               <span className="text-2xl">{t.icon}</span>
               <div>
                 <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold mb-1 ${t.badge}`}>
@@ -198,23 +171,15 @@ export default function GuestMemberForm() {
                 </div>
 
                 {/* CTA ke Login */}
-                <Button
-                  onClick={handleLoginNow}
-                  className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white font-semibold mt-1"
-                >
-                  <ArrowRight size={15} className="mr-2" />
-                  Masuk & Mulai Pesan Kamar
+                <Button onClick={handleLoginNow} className="w-full bg-[#00B074] hover:bg-[#00B074]/90 text-white font-semibold mt-1">
+                  <ArrowRight size={15} className="mr-2" /> Masuk & Mulai Pesan Kamar
                 </Button>
 
-                <Button
-                  onClick={handleDaftarLagi}
-                  variant="ghost"
-                  size="sm"
-                  className="text-green-200/50 hover:text-green-200 hover:bg-white/10 text-xs"
-                >
-                  Daftarkan Akun Lain
-                </Button>
+                <Button onClick={handleDaftarLagi} variant="ghost" size="sm"
+                  className="text-green-200/50 hover:text-green-200 hover:bg-white/10 text-xs"> 
+                  Daftarkan Akun Lain </Button>
               </div>
+
             ) : (
               /* ── Form State ── */
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
@@ -225,13 +190,8 @@ export default function GuestMemberForm() {
                   </label>
                   <div className="relative">
                     <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    <Input
-                      name="nama"
-                      value={form.nama}
-                      onChange={handleChange}
-                      placeholder="Masukkan nama lengkap Anda"
-                      className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
-                    />
+                    <Input name="nama" value={form.nama}  onChange={handleChange} placeholder="Masukkan nama lengkap Anda"
+                      className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"/>
                   </div>
                   {errors.nama && <p className="text-xs text-red-400">{errors.nama}</p>}
                 </div>
@@ -243,14 +203,8 @@ export default function GuestMemberForm() {
                   </label>
                   <div className="relative">
                     <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    <Input
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="contoh@email.com"
-                      className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
-                    />
+                    <Input name="email" type="email" value={form.email} onChange={handleChange}
+                      placeholder="contoh@email.com" className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"/>
                   </div>
                   {errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
                 </div>
@@ -262,24 +216,15 @@ export default function GuestMemberForm() {
                   </label>
                   <div className="relative">
                     <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                    <Input
-                      name="whatsapp"
-                      type="tel"
-                      value={form.whatsapp}
-                      onChange={handleChange}
-                      placeholder="+62 812 3456 7890"
-                      className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30"
-                    />
+                    <Input name="whatsapp" type="tel" value={form.whatsapp} onChange={handleChange}
+                      placeholder="+62 812 3456 7890" className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus-visible:border-[#00B074] focus-visible:ring-[#00B074]/30" />
                   </div>
                   {errors.whatsapp && <p className="text-xs text-red-400">{errors.whatsapp}</p>}
                 </div>
 
                 {/* Submit */}
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full h-10 bg-[#00B074] hover:bg-[#00B074]/90 text-white font-semibold text-sm shadow-lg shadow-green-900/30 mt-2"
-                >
+                <Button type="submit" disabled={loading}
+                  className="w-full h-10 bg-[#00B074] hover:bg-[#00B074]/90 text-white font-semibold text-sm shadow-lg shadow-green-900/30 mt-2">
                   {loading ? (
                     <>
                       <Loader2 size={15} className="animate-spin mr-2" />
@@ -294,7 +239,7 @@ export default function GuestMemberForm() {
                 </Button>
 
                 <p className="text-center text-xs text-green-200/40 pt-1">
-                  Password login akan dikirim otomatis ke WhatsApp Anda setelah daftar.
+                  Password login akan tertera otomatis ke di gform Anda setelah daftar.
                 </p>
               </form>
             )}

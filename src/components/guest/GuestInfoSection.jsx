@@ -1,11 +1,5 @@
 import { Clock, MapPin, Phone } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription} from "@/components/ui/card";
 
 const infoCards = [
   {
@@ -63,14 +57,9 @@ export default function GuestInfoSection() {
           {infoCards.map((card) => {
             const Icon = card.icon;
             return (
-              <Card
-                key={card.title}
-                className="border border-green-100 transition-shadow hover:shadow-md bg-green-50/40"
-              >
+              <Card key={card.title} className="border border-green-100 transition-shadow hover:shadow-md bg-green-50/40">
                 <CardHeader>
-                  <div
-                    className={`mb-1 flex h-10 w-10 items-center justify-center rounded-xl ${card.iconBg}`}
-                  >
+                  <div className={`mb-1 flex h-10 w-10 items-center justify-center rounded-xl ${card.iconBg}`} >
                     <Icon size={20} className={card.iconColor} />
                   </div>
                   <CardTitle className="text-base font-semibold text-[#1a3c2e]">
